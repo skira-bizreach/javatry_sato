@@ -24,7 +24,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author sato(kchan)
  */
 public class Step01VariableTest extends PlainTestCase {
 
@@ -47,8 +47,12 @@ public class Step01VariableTest extends PlainTestCase {
         String piari = null;
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mystic8:mai
     }
+    // 不正解
+    // nullは何もないってことだから、Stringにすると何もでないと思ったけど違うのか
+    // nullの場合はnullがそのまま入る
+    // printlnとかの出力系でも同じ挙動で、printlnの場合はString.valueOf()が呼ばれて、nullの場合は"null"という文字列になるらしい
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -56,8 +60,10 @@ public class Step01VariableTest extends PlainTestCase {
         String land = "oneman";
         sea = land;
         land = land + "'s dreams";
-        log(sea); // your answer? => 
+        log(sea); // your answer? => oneman
     }
+    // 正解
+    // プログラムは上から実行されるってことを頭の片隅に置いておく
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_int() {
@@ -65,8 +71,10 @@ public class Step01VariableTest extends PlainTestCase {
         int land = 415;
         sea = land;
         land++;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 415
     }
+    // 正解
+    // これも1個上の問題と同じく、プログラムは上から実行されることを意識する
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_BigDecimal() {
@@ -75,8 +83,14 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         sea = land.add(new BigDecimal(1));
         sea.add(new BigDecimal(1));
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 417
     }
+    // 不正解、正解は416
+    // BigDecimalは誤差を出さずに計算をするためのクラス
+    // コンピュータ内部だと2進数で扱われるので、変換時に誤差が出る場合がある（これ、バイト先で高校生の情報科目のサポートやってた時に習ったな）
+    // このクラスは数値を「整数値」と「小数点の位置（スケール）」の組み合わせとして10進数で管理するから誤差が起きない、ということらしい
+    // そしてこの型は不変なので、加算結果は新しいインスタンスとして返される -> つまり、addしたものを代入しないと値は変わらない
+    // addとかは勝手に変数の値を変えてくれるイメージがあったけど、型によっても違うんだな
 
     // ===================================================================================
     //                                                                   Instance Variable
@@ -89,20 +103,36 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => (何も出ない)
     }
+    // 不正解、正解はnull
+    // 初期化をしていない場合はnullが入る
+    // nullは最初の問題の通り出力されるので、nullが出る
+    // Stringはnull許容だったな
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => エラーになる
     }
+    // 不正解、正解は0
+    // 初期化してないとエラーになると思ったけど違う
+    // ローカル変数は初期化してないとエラーになるけど、インスタンス変数やクラス変数は初期化しなくてもデフォルト値が入る
+    // 今回の場合はinstanceDocksideがクラス変数だから、初期化しなくてもデフォルトの値として0が入る
+    // それをローカル変数seaの初期化に使っているから0が入ってエラーにはならない
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
+    // 正解
+    // まずintとIntegerの違いってなんだ？
+    // intはプリミティブ型(最初から用意されている型)で、nullは入らない、32ビット
+    // Integerはオブジェクト型で、nullも入る
+    // IntegerはintをStringにキャストしたい時とかに使う
+    // 今回の場合、Integerはnull許容なので、instanceHangerがnull
+    // なのでseaも同様にnull
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_via_method() {
@@ -110,8 +140,12 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => bigband|1|null|burn
     }
+    // 不正解、正解はbigband|1|null|magician
+    // クラス変数だから全部更新されると思ってたけど、helpInstanceVariableViaMethodで同じ名前の引数を作ってる
+    // 引数の中身が更新されただけで、クラス変数の中身は変わらない
+    // 42で学んだメモリとかの話にもつながりそう
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
@@ -204,7 +238,7 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     *
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
