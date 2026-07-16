@@ -53,6 +53,12 @@ public class Step01VariableTest extends PlainTestCase {
     // nullは何もないってことだから、Stringにすると何もでないと思ったけど違うのか
     // nullの場合はnullがそのまま入る
     // printlnとかの出力系でも同じ挙動で、printlnの場合はString.valueOf()が呼ばれて、nullの場合は"null"という文字列になるらしい
+    // TODO sato [ふぉろー] プログラミング言語の決めの問題となってて... by jflute (2026/07/16)
+    // Javaみたいに "null" って文字として表現するケースもあれば、C#みたいに空文字になるケースも。
+    // 画面やメール文言で "null" って表示されちゃう問題が発生しやすい一方で、
+    // 開発時のログとか画面で "null" って表示されて不具合を見つけいやすい面も。
+    // どっちもどっちみたいなところあります。
+    // System.out.println() のコード読んでるの素晴らしい(^^。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -64,6 +70,15 @@ public class Step01VariableTest extends PlainTestCase {
     }
     // 正解
     // プログラムは上から実行されるってことを頭の片隅に置いておく
+    // TODO sato [いいね] Good, その通り。なんだかんだ1行ずつですからね by jflute (2026/07/16)
+    // もうちょい踏み込むと、land = land + "'s dreams"; の行。
+    // "=" の右側から実行されます。land + "'s dreams" が評価された結果が、
+    // 左の land に代入されるという感じ。
+    // なので右辺のlandが指し示すインスタンスと、左のlandが指し示すインスタンスが、
+    // 変わっています。landという変数が持つアドレスが差し変わったと言う感じで。
+
+    // TODO jflute 1on1にて、変数とインスタンスについてお話しする予定 (2026/07/16)
+    // ↑このとぅどぅはくぼ用備忘録なので、そのままにしておいてください。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_int() {
@@ -91,6 +106,11 @@ public class Step01VariableTest extends PlainTestCase {
     // このクラスは数値を「整数値」と「小数点の位置（スケール）」の組み合わせとして10進数で管理するから誤差が起きない、ということらしい
     // そしてこの型は不変なので、加算結果は新しいインスタンスとして返される -> つまり、addしたものを代入しないと値は変わらない
     // addとかは勝手に変数の値を変えてくれるイメージがあったけど、型によっても違うんだな
+    // TODO sato [ふぉろー] そんなバイトされていたんですね（＾＾。今度お話し聞かせてください笑 by jflute (2026/07/16)
+    // 不変というキーワード素晴らしい、そこがポイントです。
+    // add() で自分が変化するパターンと、変化結果を戻すだけのパターンと二つあるわけです。
+
+    // TODO jflute 1on1にてimmutableのお話をする予定 (2026/07/16)
 
     // ===================================================================================
     //                                                                   Instance Variable
@@ -109,6 +129,7 @@ public class Step01VariableTest extends PlainTestCase {
     // 初期化をしていない場合はnullが入る
     // nullは最初の問題の通り出力されるので、nullが出る
     // Stringはnull許容だったな
+    // TODO sato [ふぉろー] Stringに限らずオブジェクト型全体がnull許容となります by jflute (2026/07/16)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
@@ -120,6 +141,8 @@ public class Step01VariableTest extends PlainTestCase {
     // ローカル変数は初期化してないとエラーになるけど、インスタンス変数やクラス変数は初期化しなくてもデフォルト値が入る
     // 今回の場合はinstanceDocksideがクラス変数だから、初期化しなくてもデフォルトの値として0が入る
     // それをローカル変数seaの初期化に使っているから0が入ってエラーにはならない
+    // TODO sato [ふぉろー] ここは言語としてのもう決めの話なんですね。 by jflute (2026/07/16)
+    // オブジェクト型ではない「プリミティブ型」と言われるものは、デフォルト値が入ります。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
@@ -133,6 +156,9 @@ public class Step01VariableTest extends PlainTestCase {
     // IntegerはintをStringにキャストしたい時とかに使う
     // 今回の場合、Integerはnull許容なので、instanceHangerがnull
     // なのでseaも同様にnull
+    // TODO sato [読み物課題] Java Beginner's Hint - プリミティブ型とラッパー型 by jflute (2026/07/16)
+    // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
+    // ↑こちらぜひ読んでみてください。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_via_method() {
@@ -146,6 +172,10 @@ public class Step01VariableTest extends PlainTestCase {
     // クラス変数だから全部更新されると思ってたけど、helpInstanceVariableViaMethodで同じ名前の引数を作ってる
     // 引数の中身が更新されただけで、クラス変数の中身は変わらない
     // 42で学んだメモリとかの話にもつながりそう
+    // TODO sato [ふぉろー] 厳密には「クラス変数」とは呼ばず「インスタンス変数」と呼ばれます by jflute (2026/07/16)
+    // クラス全体にまたがってるからクラス変数と呼びたくなりますが、厳密にはインスタンスにまたがってる変数ということで。
+    // 「クラス変数 (クラス全体にまたがってる)」となると、実は staticを付けた変数のことを差し示してしまいます。
+    // (staticを付けた変数は、レアなので現時点ではそこまで意識しなくてもOKです)
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
