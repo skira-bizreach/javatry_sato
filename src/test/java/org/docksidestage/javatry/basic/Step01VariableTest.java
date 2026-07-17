@@ -53,32 +53,54 @@ public class Step01VariableTest extends PlainTestCase {
     // nullは何もないってことだから、Stringにすると何もでないと思ったけど違うのか
     // nullの場合はnullがそのまま入る
     // printlnとかの出力系でも同じ挙動で、printlnの場合はString.valueOf()が呼ばれて、nullの場合は"null"という文字列になるらしい
-    // TODO sato [ふぉろー] プログラミング言語の決めの問題となってて... by jflute (2026/07/16)
+    // done sato [ふぉろー] プログラミング言語の決めの問題となってて... by jflute (2026/07/16)
     // Javaみたいに "null" って文字として表現するケースもあれば、C#みたいに空文字になるケースも。
     // 画面やメール文言で "null" って表示されちゃう問題が発生しやすい一方で、
     // 開発時のログとか画面で "null" って表示されて不具合を見つけいやすい面も。
     // どっちもどっちみたいなところあります。
     // System.out.println() のコード読んでるの素晴らしい(^^。
+    // #1on1: nullのネタの話、一応細かいけどメリデメがある (2026/07/17)
+    // #1on1: println() のソースコードリーディング (2026/07/17)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
-        String sea = "mystic";
-        String land = "oneman";
-        sea = land;
-        land = land + "'s dreams";
+        String sea = "mystic"; // "mystic"というStringインスタンスが生成された
+        String land = "oneman"; // "oneman"というStringインスタンスが生成された
+        sea = land; // landのアドレスがseaにコピーされる (どちらもonemanを参照してる)
+        land = land + "'s dreams"; // "'s dreams" と "oneman's dreams" というStringインスタンスが生成された
         log(sea); // your answer? => oneman
     }
     // 正解
     // プログラムは上から実行されるってことを頭の片隅に置いておく
-    // TODO sato [いいね] Good, その通り。なんだかんだ1行ずつですからね by jflute (2026/07/16)
+    // done sato [いいね] Good, その通り。なんだかんだ1行ずつですからね by jflute (2026/07/16)
     // もうちょい踏み込むと、land = land + "'s dreams"; の行。
     // "=" の右側から実行されます。land + "'s dreams" が評価された結果が、
     // 左の land に代入されるという感じ。
     // なので右辺のlandが指し示すインスタンスと、左のlandが指し示すインスタンスが、
     // 変わっています。landという変数が持つアドレスが差し変わったと言う感じで。
 
-    // TODO jflute 1on1にて、変数とインスタンスについてお話しする予定 (2026/07/16)
+    // #1on1: メソッドの中は上からだけど、構造自体はあまり上下関係ない話 (2026/07/17)
+    // メソッドの定義位置は上だろうが下だろうが挙動に影響はない。
+
+    // done jflute 1on1にて、変数とインスタンスについてお話しする予定 (2026/07/16)
     // ↑このとぅどぅはくぼ用備忘録なので、そのままにしておいてください。
+    // #1on1: 授業でインスタンスは聞いた→言語化が難しい (2026/07/17)
+    // 一軒家の設計図: クラス
+    // 具体的な一軒家作ったもの: インスタンス
+    // Stringのvalue変数も見てみて、冷蔵庫の例え。
+    // これ「インスタンス変数」と呼ぶ。インスタンスごとに独立して存在している変数。
+    // Instance Variable のエクササイズとも連携した話。
+
+    // #1on1: 変数とインスタンス (2026/07/17)
+    // String sea = "mystic";
+    // 変数にインスタンスがそのまま入っているわけではない。
+    // アドレスというキーワード。
+    // 変数の中には、アドレスしか入ってないイメージ。
+    // seaの中には、"mystic" というインスタンスが存在するアドレスが書かれた紙があるだけ。
+    // seaは "mystic" を指し示しているだけ。
+    // プログラムを見たら、変数とインスタンスの関係性をイメージできるようになって欲しい。
+
+    // #1on1: 隠れインスタンスでメモリ不足話 (2026/07/17)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_int() {
@@ -90,6 +112,8 @@ public class Step01VariableTest extends PlainTestCase {
     }
     // 正解
     // これも1個上の問題と同じく、プログラムは上から実行されることを意識する
+    // #1on1: プリミティブ型は、変数はアドレスではなく、値そのものが入っている。 (2026/07/17)
+    // (言語によっては、プリミティブ型を隠蔽して、すべてオブジェクト型にしているものもある)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_BigDecimal() {
@@ -156,7 +180,7 @@ public class Step01VariableTest extends PlainTestCase {
     // IntegerはintをStringにキャストしたい時とかに使う
     // 今回の場合、Integerはnull許容なので、instanceHangerがnull
     // なのでseaも同様にnull
-    // TODO sato [読み物課題] Java Beginner's Hint - プリミティブ型とラッパー型 by jflute (2026/07/16)
+    // TODO done sato [読み物課題] Java Beginner's Hint - プリミティブ型とラッパー型 by jflute (2026/07/16)
     // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
     // ↑こちらぜひ読んでみてください。
 
