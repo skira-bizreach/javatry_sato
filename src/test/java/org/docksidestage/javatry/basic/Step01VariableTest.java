@@ -130,17 +130,23 @@ public class Step01VariableTest extends PlainTestCase {
     // このクラスは数値を「整数値」と「小数点の位置（スケール）」の組み合わせとして10進数で管理するから誤差が起きない、ということらしい
     // そしてこの型は不変なので、加算結果は新しいインスタンスとして返される -> つまり、addしたものを代入しないと値は変わらない
     // addとかは勝手に変数の値を変えてくれるイメージがあったけど、型によっても違うんだな
-    // TODO done sato [ふぉろー] そんなバイトされていたんですね（＾＾。今度お話し聞かせてください笑 by jflute (2026/07/16)
+    // done sato [ふぉろー] そんなバイトされていたんですね（＾＾。今度お話し聞かせてください笑 by jflute (2026/07/16)
     // 不変というキーワード素晴らしい、そこがポイントです。
     // add() で自分が変化するパターンと、変化結果を戻すだけのパターンと二つあるわけです。
 
     // 大学生のときに中高生にプログラミングを教えるアルバイトをしていました、MINECRAFTにMODを作る内容でjavaを簡単にですが教えていました
     // javaを教えるのとは別で、高校3年生の情報科目の教材サポート（質問に返答する仕事）をやっていて、丸め誤差とかの話も出てきましたね
     // 情報系なので授業でもやったはずなんですが、そっちはもう3年前とかなので忘れてしまっています
+    // TODO sato [いいね] ありがとうございます。素晴らしい、良い経験ですね by jflute (2026/08/03)
+    // 内容自体はさすがに忘れてしまうと思いますが、一度体験してることでコツみたいなのが体に染み込んで残ってたりするので。
+    // また、教えるってのは言葉にするってことで、教える体験が理解を深めることになりますので、
+    // 今後も人に教えるというか伝えるというのを意識して技術と向き合っていくと良いと思います。
 
     // add()の中ではnew BigDecimal(1)で新しいインスタンスを作って加算している
     // ただ前も書いた通りこの型は不変なので、add()すると新しいインスタンスとして返ってくる
     // 123行目の場合は、新しいインスタンスのアドレスがseaに代入されるので、中身が更新されたように見える
+    // TODO sato [いいね] そう、中身が更新されたように見えるってのがポイントですね。 by jflute (2026/08/03)
+    // immutableとmutableでは全然使い方が違うので注意なのです。
 
     // TODO jflute 1on1にてimmutableのお話をする予定 (2026/07/16)
 
@@ -161,13 +167,19 @@ public class Step01VariableTest extends PlainTestCase {
     // 初期化をしていない場合はnullが入る
     // nullは最初の問題の通り出力されるので、nullが出る
     // Stringはnull許容だったな
-    // TODO done sato [ふぉろー] Stringに限らずオブジェクト型全体がnull許容となります by jflute (2026/07/16)
+    // done sato [ふぉろー] Stringに限らずオブジェクト型全体がnull許容となります by jflute (2026/07/16)
 
     // String以外、例えばIntegerやコレクション（List）もnull許容
     // コレクションはイメージつきやすいけど、Integerはそもそもほとんどこれまで使ったことないのでイメージしづらいかもしれない
     // なぜnull許容なのか？ → オブジェクト型は値じゃなく、オブジェクトへの参照が入っている
     // nullでない場合は参照としてアドレスが入る
     // nullは「参照がないこと」を表すので、null許容になる
+    // TODO sato [いいね] 変数の中身の意識でnull許容を考えるとはとてもGoodです by jflute (2026/08/03)
+    // ちなみに、Listもnull許容ですが、世界的なマナーとしてやらないってのが浸透しています。
+    // List<String> seaList = null;
+    // みたいなの。for文でループ回す時にnullチェックをしないといけないってのが面倒だし、
+    // リストという概念は、空っぽという概念も持っていますから、ないことは空っぽで表現すればいいよねみたいな。
+    // こういうように、文法としては縛られてないけど、世界的なマナーで実質的なルールになっているものもあります。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
@@ -179,7 +191,7 @@ public class Step01VariableTest extends PlainTestCase {
     // ローカル変数は初期化してないとエラーになるけど、インスタンス変数やクラス変数は初期化しなくてもデフォルト値が入る
     // 今回の場合はinstanceDocksideがクラス変数だから、初期化しなくてもデフォルトの値として0が入る
     // それをローカル変数seaの初期化に使っているから0が入ってエラーにはならない
-    // TODO done sato [ふぉろー] ここは言語としてのもう決めの話なんですね。 by jflute (2026/07/16)
+    // done sato [ふぉろー] ここは言語としてのもう決めの話なんですね。 by jflute (2026/07/16)
     // オブジェクト型ではない「プリミティブ型」と言われるものは、デフォルト値が入ります。
 
     // なぜプリミティブ型（値が入るもの）にはデフォルト値が入る？
@@ -199,7 +211,7 @@ public class Step01VariableTest extends PlainTestCase {
     // IntegerはintをStringにキャストしたい時とかに使う
     // 今回の場合、Integerはnull許容なので、instanceHangerがnull
     // なのでseaも同様にnull
-    // TODO done sato [読み物課題] Java Beginner's Hint - プリミティブ型とラッパー型 by jflute (2026/07/16)
+    // done sato [読み物課題] Java Beginner's Hint - プリミティブ型とラッパー型 by jflute (2026/07/16)
     // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
     // ↑こちらぜひ読んでみてください。
 
@@ -207,6 +219,10 @@ public class Step01VariableTest extends PlainTestCase {
     // Kotlinを業務で描くようになってnull許容を意識するようになったけど、これまでjavaを書いてきた中ではほとんど意識してなかった
     // Integer、intをStringに変換するときくらいしか使わないな
     // メソッドを使えるのはメリットの一つではあるけど、とはいえあまり使わないなと思った
+    // TODO sato [ふぉろー] プリミティブ型をnullを防ぐ手段として使うのは、本当にたまたまですね。 by jflute (2026/08/03)
+    // Javaの文法的にオブジェクト型で(コンパイルレベルで)nullを防ぐ手段がなかったので、
+    // 若干文法の隙をついてそうやるようになったみたいな。
+    // Kotlinは後に作られた言語なので、そこを見越して文法にnull可否を表現できるようにしたけですね。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_via_method() {
@@ -220,7 +236,7 @@ public class Step01VariableTest extends PlainTestCase {
     // クラス変数だから全部更新されると思ってたけど、helpInstanceVariableViaMethodで同じ名前の引数を作ってる
     // 引数の中身が更新されただけで、クラス変数の中身は変わらない
     // 42で学んだメモリとかの話にもつながりそう
-    // TODO done sato [ふぉろー] 厳密には「クラス変数」とは呼ばず「インスタンス変数」と呼ばれます by jflute (2026/07/16)
+    // done sato [ふぉろー] 厳密には「クラス変数」とは呼ばず「インスタンス変数」と呼ばれます by jflute (2026/07/16)
     // クラス全体にまたがってるからクラス変数と呼びたくなりますが、厳密にはインスタンスにまたがってる変数ということで。
     // 「クラス変数 (クラス全体にまたがってる)」となると、実は staticを付けた変数のことを差し示してしまいます。
     // (staticを付けた変数は、レアなので現時点ではそこまで意識しなくてもOKです)
@@ -229,6 +245,11 @@ public class Step01VariableTest extends PlainTestCase {
     // インスタンス変数はインスタンスごとに値や参照を持っている
     // 逆にクラス変数は全てのインスタンスで共通の値や参照を持つ
     // ローカル変数とクラス変数が使用できる範囲（スコープ）を示しているように思えてしまうのが混乱する原因かもしれないですね
+    // TODO sato [いいね] やっぱり "static変数" って呼んじゃいますよね笑。自然とそうなるのかな... by jflute (2026/08/03)
+    // 確かに、ローカル変数とインスタンス変数はスコープを示しているように捉えても大丈夫ですが、
+    // クラス変数(static)だけその感覚だとピンと来ないですよね。
+    // クラス変数のクラスは、クラス内のコードというより設計図って概念のニュアンスが大きいのかも。
+    // 設計事務所側のスコープということで、"全てのインスタンスで共通の値や参照を持つ" な感じに。
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
