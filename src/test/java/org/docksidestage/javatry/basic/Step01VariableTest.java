@@ -137,18 +137,42 @@ public class Step01VariableTest extends PlainTestCase {
     // 大学生のときに中高生にプログラミングを教えるアルバイトをしていました、MINECRAFTにMODを作る内容でjavaを簡単にですが教えていました
     // javaを教えるのとは別で、高校3年生の情報科目の教材サポート（質問に返答する仕事）をやっていて、丸め誤差とかの話も出てきましたね
     // 情報系なので授業でもやったはずなんですが、そっちはもう3年前とかなので忘れてしまっています
-    // TODO sato [いいね] ありがとうございます。素晴らしい、良い経験ですね by jflute (2026/08/03)
+    // done sato [いいね] ありがとうございます。素晴らしい、良い経験ですね by jflute (2026/08/03)
     // 内容自体はさすがに忘れてしまうと思いますが、一度体験してることでコツみたいなのが体に染み込んで残ってたりするので。
     // また、教えるってのは言葉にするってことで、教える体験が理解を深めることになりますので、
     // 今後も人に教えるというか伝えるというのを意識して技術と向き合っていくと良いと思います。
+    // #1on1: 技術を言葉にして人に伝える機会があったらぜひ積極的に (2026/08/03)
 
     // add()の中ではnew BigDecimal(1)で新しいインスタンスを作って加算している
     // ただ前も書いた通りこの型は不変なので、add()すると新しいインスタンスとして返ってくる
     // 123行目の場合は、新しいインスタンスのアドレスがseaに代入されるので、中身が更新されたように見える
-    // TODO sato [いいね] そう、中身が更新されたように見えるってのがポイントですね。 by jflute (2026/08/03)
+    // done sato [いいね] そう、中身が更新されたように見えるってのがポイントですね。 by jflute (2026/08/03)
     // immutableとmutableでは全然使い方が違うので注意なのです。
+    // #1on1: "中身が更新されたように見える" という表現が素晴らしい (2026/08/03)
+    // 変数とインスタンスの関係性をしっかり理解している証拠。
 
-    // TODO jflute 1on1にてimmutableのお話をする予定 (2026/07/16)
+    // done jflute 1on1にてimmutableのお話をする予定 (2026/07/16)
+    // #1on1: immutable/mutableとは？ (2026/08/03)
+    // immutableって言葉よく使う？ ($学生時代は聞いたこともほとんどない)
+    // immutable (不変な)
+    // o immutableなクラス(インスタンス) // default!?
+    // o immutableな変数
+    // 
+    // immutableなクラス(インスタンス):
+    // まさしくBigDecimalみたいなもので、インスタンス内の状態が絶対に変化しない特徴。
+    // immutableなクラス == immutableな設計をしているクラス
+    // immutableなインスタンス == その設計から作られてimmutableな特徴を持つインスタンス
+    // BigDecimalのインスタンス変数を見るとfinalが付いてて状態が変わらないようになっている。
+    // (もしくは、finalが付いてなくても、実質的に内部利用のみで外部に影響与える変化はしないケースも)
+    //
+    // immutableな変数:
+    // finalが付いてて、再代入ができない変数。(Kotlinだとval)
+    //
+    // 変数もクラスもimmutableで、だぶるいみゅーたぶるだったら...
+    // その変数(インスタンス)はずっと同じ値であることが保証される。
+    // BigDecimalのintValの例をみてみた。(使ってるクラスのBigIntegerもimmutable)
+    //
+    // 後は、immutable/mutableのさらなる深掘りは後半エクササイズにて。
 
     // ===================================================================================
     //                                                                   Instance Variable
@@ -174,12 +198,14 @@ public class Step01VariableTest extends PlainTestCase {
     // なぜnull許容なのか？ → オブジェクト型は値じゃなく、オブジェクトへの参照が入っている
     // nullでない場合は参照としてアドレスが入る
     // nullは「参照がないこと」を表すので、null許容になる
-    // TODO sato [いいね] 変数の中身の意識でnull許容を考えるとはとてもGoodです by jflute (2026/08/03)
+    // done sato [いいね] 変数の中身の意識でnull許容を考えるとはとてもGoodです by jflute (2026/08/03)
     // ちなみに、Listもnull許容ですが、世界的なマナーとしてやらないってのが浸透しています。
     // List<String> seaList = null;
     // みたいなの。for文でループ回す時にnullチェックをしないといけないってのが面倒だし、
     // リストという概念は、空っぽという概念も持っていますから、ないことは空っぽで表現すればいいよねみたいな。
     // こういうように、文法としては縛られてないけど、世界的なマナーで実質的なルールになっているものもあります。
+    // #1on1: 空リストなのか？Listの変数がnullなのか？それを業務的に区別する必要がないよねって話 (2026/08/03)
+    // それがちゃんと浸透している。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
@@ -199,6 +225,8 @@ public class Step01VariableTest extends PlainTestCase {
     // オブジェクト型は参照（アドレス）が入るので、「参照先がないこと」を表すnullがデフォルト値になる
     // ローカル変数は自動で初期値入らないのでそれは注意
 
+    // #1on1: 業務的な0なのか？文法上のデフォルト0なのか？区別が付かないことが時々困る (2026/08/03)
+
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
@@ -214,15 +242,20 @@ public class Step01VariableTest extends PlainTestCase {
     // done sato [読み物課題] Java Beginner's Hint - プリミティブ型とラッパー型 by jflute (2026/07/16)
     // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
     // ↑こちらぜひ読んでみてください。
+    // #1on1: よく使われるプリミティブ型のお話 (2026/08/03)
+    // (業務webサービスでは)int/longは両方よく使われる。booleanは、ほとんどプリミティブ型。
 
     // nullが入らない型としてプリミティブ型を使う、っていう考え方があることに驚いた
     // Kotlinを業務で描くようになってnull許容を意識するようになったけど、これまでjavaを書いてきた中ではほとんど意識してなかった
     // Integer、intをStringに変換するときくらいしか使わないな
     // メソッドを使えるのはメリットの一つではあるけど、とはいえあまり使わないなと思った
-    // TODO sato [ふぉろー] プリミティブ型をnullを防ぐ手段として使うのは、本当にたまたまですね。 by jflute (2026/08/03)
+    // done sato [ふぉろー] プリミティブ型をnullを防ぐ手段として使うのは、本当にたまたまですね。 by jflute (2026/08/03)
     // Javaの文法的にオブジェクト型で(コンパイルレベルで)nullを防ぐ手段がなかったので、
     // 若干文法の隙をついてそうやるようになったみたいな。
-    // Kotlinは後に作られた言語なので、そこを見越して文法にnull可否を表現できるようにしたけですね。
+    // Kotlinは後に作られた言語なので、そこを見越して文法にnull可否を表現できるようにしたわけですね。
+
+    // #1on1: 曖昧な情報とか、感想とか評価とかは、なかなか本とかネット上では出てこない話 (2026/08/03)
+    // なので、現場での先輩との会話とか、こういった1on1の場とかが重要になってくる。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_via_method() {
@@ -251,12 +284,16 @@ public class Step01VariableTest extends PlainTestCase {
     // クラス変数のクラスは、クラス内のコードというより設計図って概念のニュアンスが大きいのかも。
     // 設計事務所側のスコープということで、"全てのインスタンスで共通の値や参照を持つ" な感じに。
 
+    // TODO jflute 次回↑ここの残りフォローする (2026/08/03)
+
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
         ++instanceDockside;
         instanceMagiclamp = "burn";
     }
 
+    // TODO jflute 次回1on1にてimmutable/mutableのさらなる深掘り (2026/08/03)
+    // あと、Kotlinのプログラムで、immutable/mutableなクラスを探してきてください。
     // ===================================================================================
     //                                                                     Method Argument
     //                                                                     ===============
