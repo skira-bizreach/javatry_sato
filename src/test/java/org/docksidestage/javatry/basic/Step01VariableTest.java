@@ -278,11 +278,13 @@ public class Step01VariableTest extends PlainTestCase {
     // インスタンス変数はインスタンスごとに値や参照を持っている
     // 逆にクラス変数は全てのインスタンスで共通の値や参照を持つ
     // ローカル変数とクラス変数が使用できる範囲（スコープ）を示しているように思えてしまうのが混乱する原因かもしれないですね
-    // TODO sato [いいね] やっぱり "static変数" って呼んじゃいますよね笑。自然とそうなるのかな... by jflute (2026/08/03)
+    // TODO done sato [いいね] やっぱり "static変数" って呼んじゃいますよね笑。自然とそうなるのかな... by jflute (2026/08/03)
     // 確かに、ローカル変数とインスタンス変数はスコープを示しているように捉えても大丈夫ですが、
     // クラス変数(static)だけその感覚だとピンと来ないですよね。
     // クラス変数のクラスは、クラス内のコードというより設計図って概念のニュアンスが大きいのかも。
     // 設計事務所側のスコープということで、"全てのインスタンスで共通の値や参照を持つ" な感じに。
+
+    // ややこしいところなので、名前がスコープを示していると捉えるよりもきちんとそれぞれの意味を理解しておくべきですね
 
     // TODO jflute 次回↑ここの残りフォローする (2026/08/03)
 
@@ -294,6 +296,9 @@ public class Step01VariableTest extends PlainTestCase {
 
     // TODO jflute 次回1on1にてimmutable/mutableのさらなる深掘り (2026/08/03)
     // あと、Kotlinのプログラムで、immutable/mutableなクラスを探してきてください。
+
+    // MutableListはMutableって付いてますね、そのまま可変なリストという意味なのか
+    // 基本的な型（StringとかIntとか）はJava同様Immutable
     // ===================================================================================
     //                                                                     Method Argument
     //                                                                     ===============
@@ -305,8 +310,11 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "harbor";
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416
     }
+    // 不正解、正解はharbor
+    // StringはImmutableなクラスなので、concatは文字列を結合し新しいインスタンスを返す
+    // concatもだし、呼び出しているメソッドの中で変数が変わってもreturnとかをしてないから呼び出し元には影響がない
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
@@ -322,8 +330,14 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416
     }
+
+    // 正解
+    // StringBuilderはmutableなクラス（さっき見た）
+    // mutableなクラスなのでseaの中身が変わる
+    // mutableなクラスは同じオブジェクトを参照しており、オブジェクト自体を変更できるため、呼び出し元にも変更が見える
+    // 一方、immutableなクラスは同じオブジェクトを参照していてもオブジェクト自体を更新できないため、新しいインスタンスが返る
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
         ++land;
@@ -338,8 +352,12 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416
     }
+
+    // 不正解、正解はharbor
+    // seaがStringBuilderなのは変わらないと思ったからharbor416だと思った
+    // でも下のメソッドで new して新しいインスタンスを作っているから、見ているオブジェクトが違うものになって上のメソッドのseaが変わらない
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
         ++land;
@@ -366,8 +384,12 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+
+    private int piari;
     public void test_variable_writing() {
-        // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        log(sea + "," + land + "," + piari);
     }
 
     // ===================================================================================
@@ -379,11 +401,33 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
+     * 次の条件を満たすプログラムを作成してください。
      *
+     *   1. String型とStringBuilder型の変数をそれぞれ1つずつ用意する。
+     *   2. それらを別のメソッドへ引数として渡す。
+     *   3. 呼び出したメソッド内で、Stringには文字列結合を行い、StringBuilderには文字列追加を行う。
+     *   4. メソッドから戻った後、呼び出し元の変数の中身を表示する。
+     *   5. StringとStringBuilderで結果が異なる理由をコメントで説明する。
+     *
+     *   メソッドから値をreturnしない場合、StringとStringBuilderの値はそれぞれどうなるでしょうか？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_variable_yourExercise() {
-        // write your code here
+        String s = "test";
+        StringBuilder sb = new StringBuilder("test");
+        helpMethodYourExcercise(s, sb);
+        log(s); // your answer? => test
+        log(sb); // your answer? => test100
     }
+
+    private void helpMethodYourExcercise(String s, StringBuilder sb) {
+        int i = 100;
+        s.concat(String.valueOf(i));
+        sb.append(i);
+    }
+
+    // 復習
+    // Stringはimmutableなクラスなので中身は変わらない
+    // StringBuilderはmutableなクラスなので中身が変わる
 }
