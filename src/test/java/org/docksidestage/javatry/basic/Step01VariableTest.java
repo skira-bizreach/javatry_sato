@@ -51,6 +51,7 @@ public class Step01VariableTest extends PlainTestCase {
     }
     // 不正解
     // nullは何もないってことだから、Stringにすると何もでないと思ったけど違うのか
+    // TODO sato 全く同じことを思った記憶があります by fujisawa (2026/08/13)
     // nullの場合はnullがそのまま入る
     // printlnとかの出力系でも同じ挙動で、printlnの場合はString.valueOf()が呼ばれて、nullの場合は"null"という文字列になるらしい
     // done sato [ふぉろー] プログラミング言語の決めの問題となってて... by jflute (2026/07/16)
@@ -315,6 +316,7 @@ public class Step01VariableTest extends PlainTestCase {
     // 不正解、正解はharbor
     // StringはImmutableなクラスなので、concatは文字列を結合し新しいインスタンスを返す
     // concatもだし、呼び出しているメソッドの中で変数が変わってもreturnとかをしてないから呼び出し元には影響がない
+    // TODO sato どのエディタをつかっているかわからないですが、IntelliJだと、concatに警告がでますね。 by fujisawa (2026/08/13)
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
