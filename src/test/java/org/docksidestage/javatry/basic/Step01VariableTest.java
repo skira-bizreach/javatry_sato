@@ -174,6 +174,31 @@ public class Step01VariableTest extends PlainTestCase {
     // BigDecimalのintValの例をみてみた。(使ってるクラスのBigIntegerもimmutable)
     //
     // 後は、immutable/mutableのさらなる深掘りは後半エクササイズにて。
+    //
+    // #1on1: immutableのメリデメ (2026/08/21)
+    // pp メリット
+    // o 変えちゃいけない中身を変えられないので安心 → 安全性
+    // o 読み飛ばしとかimmutableの情報を使って読み進められる → 可読性
+    //   (安全なものは何かしらのルールの則ってる可能性高いので、可読性にもつながりやすい)
+    //   (高級な絵画の例)
+    //
+    // pp デメリット
+    // o $変えようとした時にインスタンスが増えちゃう、メモリ
+    // o immutableは手間を掛けてimmutableにしているので、言語サポート(文法)など欲しい
+    //
+    // immutableの歴史
+    // o 昔はメモリが貧弱だった → new/newするやり方は避ける傾向にあった
+    // o 昔は言語の文法も貧弱だった
+    // o 今やそれらは進化してデメリットが小さくなった
+    //
+    // (デメリットの大小は、時系列でも変わるし、場所でも変わる、相対的なもの)
+    //
+    // immutableのバランス
+    // o 言語と組織と個人の文化に寄る
+    // o Java: 歴史もあるし、コンセプトもあるしなので、8:2くらいの印象
+    //  i jflute個人もそんな感覚でimmutable寄りだけど無理しない
+    //  i ただ、mutable使う時は、別の方法で安全性や可読性をカバーしようと工夫する
+    // o 他の言語はimmutable全推しorかなり推しもある。
 
     // ===================================================================================
     //                                                                   Instance Variable
@@ -279,7 +304,7 @@ public class Step01VariableTest extends PlainTestCase {
     // インスタンス変数はインスタンスごとに値や参照を持っている
     // 逆にクラス変数は全てのインスタンスで共通の値や参照を持つ
     // ローカル変数とクラス変数が使用できる範囲（スコープ）を示しているように思えてしまうのが混乱する原因かもしれないですね
-    // TODO done sato [いいね] やっぱり "static変数" って呼んじゃいますよね笑。自然とそうなるのかな... by jflute (2026/08/03)
+    // done sato [いいね] やっぱり "static変数" って呼んじゃいますよね笑。自然とそうなるのかな... by jflute (2026/08/03)
     // 確かに、ローカル変数とインスタンス変数はスコープを示しているように捉えても大丈夫ですが、
     // クラス変数(static)だけその感覚だとピンと来ないですよね。
     // クラス変数のクラスは、クラス内のコードというより設計図って概念のニュアンスが大きいのかも。
@@ -295,11 +320,14 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "burn";
     }
 
-    // TODO jflute 次回1on1にてimmutable/mutableのさらなる深掘り (2026/08/03)
+    // done jflute 次回1on1にてimmutable/mutableのさらなる深掘り (2026/08/03)
     // あと、Kotlinのプログラムで、immutable/mutableなクラスを探してきてください。
 
     // MutableListはMutableって付いてますね、そのまま可変なリストという意味なのか
     // 基本的な型（StringとかIntとか）はJava同様Immutable
+    // #1on1: 実際に使ってるわけじゃなく、Kotlinのクラスとして見つけた MutableList (2026/08/21)
+    // #1on1: 現場でmutableはレアだと思われるので、見つけたら教えてください (2026/08/21)
+
     // ===================================================================================
     //                                                                     Method Argument
     //                                                                     ===============
@@ -308,7 +336,7 @@ public class Step01VariableTest extends PlainTestCase {
     //                                 ---------------------
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_immutable_methodcall() {
-        String sea = "harbor";
+        String sea = "harbor"; // 6丁目6番地に"harbor"Stringインスタンス建てて、seaに6丁目6番地を書き込む
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
         log(sea); // your answer? => harbor416
@@ -317,6 +345,11 @@ public class Step01VariableTest extends PlainTestCase {
     // StringはImmutableなクラスなので、concatは文字列を結合し新しいインスタンスを返す
     // concatもだし、呼び出しているメソッドの中で変数が変わってもreturnとかをしてないから呼び出し元には影響がない
     // TODO sato どのエディタをつかっているかわからないですが、IntelliJだと、concatに警告がでますね。 by fujisawa (2026/08/13)
+
+    // #1on1: じっくり図を見ながら変数とインスタンスの関係性を追ってみた (2026/08/21)
+    // そして、Stringはimmutableなので、実はhelpメソッドを読まなくても答えが出ちゃう。
+    // なので、immutableって読み手にとっての情報になる。だから可読性が良くなる。
+    // immutableは一つの事象しか発生しない。helpで書き換えてない、という事象のみ。
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
@@ -341,6 +374,10 @@ public class Step01VariableTest extends PlainTestCase {
     // mutableなクラスは同じオブジェクトを参照しており、オブジェクト自体を変更できるため、呼び出し元にも変更が見える
     // 一方、immutableなクラスは同じオブジェクトを参照していてもオブジェクト自体を更新できないため、新しいインスタンスが返る
 
+    // #1on1: こっちはhelpメソッドを読まないと絶対に確定できない (2026/08/21)
+    // なぜなら、mutableな引数だから、help内で書き換えてる、書き換えてないの二つの事象があり得るから。
+    // mutableは読み手にとって、あまり情報にならない。(immutableに比べて)
+
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
         ++land;
         sea.append(land);
@@ -360,6 +397,8 @@ public class Step01VariableTest extends PlainTestCase {
     // 不正解、正解はharbor
     // seaがStringBuilderなのは変わらないと思ったからharbor416だと思った
     // でも下のメソッドで new して新しいインスタンスを作っているから、見ているオブジェクトが違うものになって上のメソッドのseaが変わらない
+    // #1on1: Good, しっかり理解できています (2026/08/21)
+    // ここでも絵画の例 (書き写した絵画に落書きしただけ)
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
         ++land;
@@ -388,11 +427,16 @@ public class Step01VariableTest extends PlainTestCase {
      */
 
     private int piari;
+
     public void test_variable_writing() {
         String sea = "mystic";
         Integer land = null;
         log(sea + "," + land + "," + piari);
     }
+
+    // #1on1: サンプル変数名としてfoo,bar / hoge,fuga が良く使われる。 (2026/08/21)
+    // foo, bar, baz, qux, quux, corge(だっけ), ...
+    // なんか sea, land, piari, bonvo, dstore, amba, miraco, dohotel
 
     // ===================================================================================
     //                                                                           Good Luck
