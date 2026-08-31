@@ -25,7 +25,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author sato(kchan)
  */
 public class Step02IfForTest extends PlainTestCase {
 
@@ -109,8 +109,11 @@ public class Step02IfForTest extends PlainTestCase {
         if (land) {
             sea = 10;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10
     }
+    // 正解
+    // これだけ処理が分岐すると、どこで値がどう変わるか混乱してくる
+    // IntelliJが親切だから条件文に常にtrue / falseです、って出してくれる、カーソル合わせると見えちゃうから良くないな…
 
     // ===================================================================================
     //                                                                       for Statement
@@ -125,8 +128,10 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    // 正解
+    // javaは配列の添字は0から
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_basic() {
@@ -135,8 +140,11 @@ public class Step02IfForTest extends PlainTestCase {
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
     }
+    // 正解
+    // for (String stage : stageList)はstageListの中身をstageに入れて、listの終端まで繰り返す
+    // 毎回seaがstageの中身で上書きされて示すアドレスが変わり、最後のmagiclampが入る
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
@@ -151,8 +159,11 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar
     }
+    // 正解
+    // continueはその下の処理をスキップして、繰り返しの最初に戻る
+    // breakは繰り返しを抜ける
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_listforeach_basic() {
@@ -167,8 +178,17 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    // 正解
+    // javaでラムダ式は初めて見た、実務ではKotlinだから良く見てます
+    // forEachでstageListの中身1つ1つを処理する
+    // ラムダ式なので、処理するstageListの中身がstageに入る
+    // stageListの中身は2番目（添え字としては1）にiが入るので、そのタイミングで　sbにdocksideが入る
+    // 次にstageがhangarになった時には、sb.length() > 0が満たされるので、returnされてラムダが終了
+    // (あってるか不安だったのでAIに聞いたところ、ここのreturnはラムダの1回の要素処理だけを終了するらしい)
+    // (結果的に他の中身ではsb.length() > 0が満たされないので中身が変わらなかった)
+    // sbの最後の中身はdocksideなので、docksideが出力される
 
     // ===================================================================================
     //                                                                           Challenge
@@ -179,7 +199,13 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_making() {
         // write if-for here
+        List<String> stageList = prepareStageList();
+        for (String stage : stageList) {
+            if (stage.contains("a"))
+                log(stage);
+        }
     }
+    // for文以外もforEachとかでも書けそう
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -191,6 +217,9 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         String sea = null;
+        StringBuilder sb = new StringBuilder();
+        Boolean isBreak = false;
+        /*
         for (String stage : stageList) {
             if (stage.startsWith("br")) {
                 continue;
@@ -200,8 +229,34 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
+         */
+        stageList.forEach(stage -> {
+            final String st = sb.toString();
+            if (st.contains("ga")) {
+                return;
+            }
+            if (stage.startsWith("br")) {
+                return;
+            }
+            sb.setLength(stage.length());
+            sb.replace(0, stage.length(), stage);
+        });
+        sea = sb.toString();
         log(sea); // should be same as before-fix
     }
+    // 実行結果はhangar
+    // continueは先ほどreturnを使って同じような処理をしているのを見た
+    // seaもラムダ式の中ではfinal相当の変数でないと使用できないらしい
+    // これは前に見たものと同様にStringBuilderを定義し、それをラムダ式の中で使うことで回避した
+    // breakはどうやって表現するんだ？
+    // 詰まったので調査したところ、ラムダ式の中ではbreakは使えない
+
+    // 要件を整理し直してみる
+    // brが含まれている文字列は何もせずスキップ → これは変わらない
+    // それ以外の文字ならseaを入れ替える → これはStringBuilderを使う
+    // gaが含まれている文字列ならその後何もせず処理終了 → gaが含まれているかを最初に確認する必要がある
+    // あとはappendだと追加になるので、StringBuilderのメソッドを調べて、中身を入れ替える処理に変更すればいけた
+    // breakが使えないってこんなに大変なんだな
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
