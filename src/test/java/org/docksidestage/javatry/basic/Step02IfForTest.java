@@ -87,7 +87,7 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = sea++ * 2;
             }
             if (!land) {
-                land = true;
+                land = true; // とにかくここ通ればseaは10
             } else if (sea <= 903) {
                 sea++;
             }
@@ -114,6 +114,45 @@ public class Step02IfForTest extends PlainTestCase {
     // 正解
     // これだけ処理が分岐すると、どこで値がどう変わるか混乱してくる
     // IntelliJが親切だから条件文に常にtrue / falseです、って出してくれる、カーソル合わせると見えちゃうから良くないな…
+
+    // #1on1: コードリーディングのコツ、漠然読み (2026/09/04)
+    // $上から読んでなくても、landがtrueなら10じゃん、land読んでおけば良かった。
+    // $こういうこともあるのか
+    // そういう体験をされたのは素晴らしい。
+    // (javatryとしてはじっくり読むこと自体もトレーニングなので良いとして)
+    // 
+    // (まずスクロールして輪郭だけみて...)
+    // o 漠然読みで構造把握 (全体像を見る)
+    //  → ここだと、変数宣言、大中小のif文、ログ出し (5つのパート)
+    //
+    // o 当たりを付けてフォーカス読み
+    //  (当たりの探し方)
+    //  → seaに影響を与える行は直近(の確率が高い)ので逆さ読みでsea=10を見つける
+    //  → もしくは全体像を見たことで自然とsea=10が目に入る
+    //    (ストーリーがわかってれば、自然とこの辺を見れば当たりがありそう)
+    //  → なんにせよ、そう言うふうに当たりを探す
+    //
+    // 当たりがどこかにあるんじゃないかと思って読む。
+    //
+    // ただ、ギャンブルに負けることはあります。だけど、損はない。
+    // 構造把握しているし、ある程度踏み込んでるので、
+    // ０から網羅読みするよりは速く読めるようになってる。
+    // (頭の中で地図を作ってから読む方が、安定して読める)
+    //
+    // さらに、ある程度踏み込んだことで、次の当たりが見つかることも。
+    // 3,4回繰り返したとしても、網羅読みするよりは速い可能性。
+    //
+    // 極力、読まなくて良いところ読まないで済ませたい。そのための方法論の一つ。
+    //
+    // よもやま: 仮説思考的なコードリーディング!?
+
+    // TODO sato [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
+    // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
+
+    // TODO sato [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/09/04)
+    // https://jflute.hatenadiary.jp/entry/20150727/fivebooks
+    // #1on1: 他業種の特化したbutぼくらも共通のお話が役に立つことも多い (2026/09/04)
+    // (他の人の俳句の話から変数名の命名の技術話)
 
     // ===================================================================================
     //                                                                       for Statement
@@ -145,6 +184,12 @@ public class Step02IfForTest extends PlainTestCase {
     // 正解
     // for (String stage : stageList)はstageListの中身をstageに入れて、listの終端まで繰り返す
     // 毎回seaがstageの中身で上書きされて示すアドレスが変わり、最後のmagiclampが入る
+
+    // #1on1: Javaの文法としての二つのループ (2026/09/04)
+    // o いんとiのfor文: Java当初から (1995年)
+    // o 拡張for文(foreach文): Java10年目くらいから (2005年)
+    //
+    // 普通のfor文って言った場合どっち？ → 現場だと拡張for文
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
@@ -218,6 +263,9 @@ public class Step02IfForTest extends PlainTestCase {
         List<String> stageList = prepareStageList();
         String sea = null;
         StringBuilder sb = new StringBuilder();
+        // #1on1: isBreak を使わなかったところが素晴らしい (2026/09/04)
+        // sb が isBreak の情報を持ってるので、不要な変数を作らなくて良い。
+        @SuppressWarnings("unused") // おもいで
         Boolean isBreak = false;
         /*
         for (String stage : stageList) {
@@ -231,6 +279,8 @@ public class Step02IfForTest extends PlainTestCase {
         }
          */
         stageList.forEach(stage -> {
+            // TODO sato パフォーマンス考慮、毎ループtoString()するとインスタンス多い by jflute (2026/09/04)
+            // StringBuilderのまま判定できると良い。
             final String st = sb.toString();
             if (st.contains("ga")) {
                 return;
@@ -257,6 +307,10 @@ public class Step02IfForTest extends PlainTestCase {
     // gaが含まれている文字列ならその後何もせず処理終了 → gaが含まれているかを最初に確認する必要がある
     // あとはappendだと追加になるので、StringBuilderのメソッドを調べて、中身を入れ替える処理に変更すればいけた
     // breakが使えないってこんなに大変なんだな
+
+    // #1on1: なんで、Lambda式の中で、外側のローカル変数の再代入ができないのか？ (2026/09/04)
+    // $なんでだろう？
+    // 仕組みが違うのか？
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
