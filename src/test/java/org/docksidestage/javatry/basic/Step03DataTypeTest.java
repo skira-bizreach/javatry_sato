@@ -26,7 +26,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author sato
  */
 public class Step03DataTypeTest extends PlainTestCase {
 
@@ -54,8 +54,11 @@ public class Step03DataTypeTest extends PlainTestCase {
             BigDecimal addedDecimal = amba.add(new BigDecimal(land));
             sea = String.valueOf(addedDecimal);
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 18.4
     }
+    // 正解
+    // 下から読むのをやってみようと思ったけど、結果的に上から読んだ方が確実だった気がする
+    // bonvoの月に1足して代入するの、見落としそうだった
 
     // ===================================================================================
     //                                                                           Primitive
@@ -82,8 +85,11 @@ public class Step03DataTypeTest extends PlainTestCase {
         if ((int) dstore > piari) {
             sea = 0;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 2
     }
+    // 正解
+    // 数値系の型はいろいろあって難しいですね
+    // 特にキャストは切り捨てられたりが発生する、基本的に少数ってfloatかdoubleなので、byteも切り捨てられると予想した
 
     // ===================================================================================
     //                                                                              Object

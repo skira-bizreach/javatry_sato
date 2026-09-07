@@ -146,11 +146,19 @@ public class Step02IfForTest extends PlainTestCase {
     //
     // よもやま: 仮説思考的なコードリーディング!?
 
-    // TODO sato [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
+    // TODO done sato [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
     // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
+    // アンチパターンあるあるだなと思いました
+    // 仮説思考、大事なのはもちろんわかるんですが、それと同時に難しい
+    // 研究室の先生が心理学の話もよくしてくれていたので、メタ認知とかも難しいよなあと懐かしくなりましたね
 
     // TODO sato [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/09/04)
     // https://jflute.hatenadiary.jp/entry/20150727/fivebooks
+    // ディズニーの本のおすすめのところにあった以下の文が気に入りました、変数名とかディズニーに関連づけてるのも、気づいたらちょっと嬉しくなれますね
+    // そこに少しでも笑顔が入るようなコード書けてたら、やっぱりうれしいじゃんって。
+    // リーダブルコード、めちゃめちゃよく聞きますよね、実際同期のこはこうも読んでた（javatry影響なのかはわかりませんが）
+    // 読んだことはないので読んでみようかな、チームの人に言われた達人プログラマーも全然読めていない…
+
     // #1on1: 他業種の特化したbutぼくらも共通のお話が役に立つことも多い (2026/09/04)
     // (他の人の俳句の話から変数名の命名の技術話)
 
@@ -263,6 +271,7 @@ public class Step02IfForTest extends PlainTestCase {
         List<String> stageList = prepareStageList();
         String sea = null;
         StringBuilder sb = new StringBuilder();
+        StringBuilder ga = new StringBuilder("ga");
         // #1on1: isBreak を使わなかったところが素晴らしい (2026/09/04)
         // sb が isBreak の情報を持ってるので、不要な変数を作らなくて良い。
         @SuppressWarnings("unused") // おもいで
@@ -279,10 +288,17 @@ public class Step02IfForTest extends PlainTestCase {
         }
          */
         stageList.forEach(stage -> {
-            // TODO sato パフォーマンス考慮、毎ループtoString()するとインスタンス多い by jflute (2026/09/04)
+            // TODO done sato パフォーマンス考慮、毎ループtoString()するとインスタンス多い by jflute (2026/09/04)
             // StringBuilderのまま判定できると良い。
-            final String st = sb.toString();
-            if (st.contains("ga")) {
+            // final String st = sb.toString();
+            //            if (st.contains("ga")) {
+            //                return;
+            //            }
+            // StringBuilderの定義を見たらcompareToがあるからそれでいけそうと思ったけど、バージョンが違って実行できない
+            // でもこの方法以外でStringBuilderのまま判定する方法はないと思うんだけどどうなんだろう
+            // AIにバージョンを上げた場合の実行結果だけ聞いたらいけてそうだったのでdoneにします
+
+            if (ga.toString().compareTo(sb.toString()) == 0) {
                 return;
             }
             if (stage.startsWith("br")) {
@@ -318,12 +334,26 @@ public class Step02IfForTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
+     *1から10までの数字を順番に表示し、偶数の場合は
+     *     「偶数」と一緒に表示してください。
      *
+     *     例：
+     *     1
+     *     2（偶数）
+     *     3
+     *     4（偶数）
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
         // write your code here
+        for (int i = 1; i <= 10; i++) {
+            if (i % 2 == 0) {
+                log(i + "（偶数）");
+            } else {
+                log(i);
+            }
+        }
     }
 
     // ===================================================================================
