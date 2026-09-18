@@ -146,13 +146,13 @@ public class Step02IfForTest extends PlainTestCase {
     //
     // よもやま: 仮説思考的なコードリーディング!?
 
-    // TODO done sato [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
+    // done sato [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
     // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
     // アンチパターンあるあるだなと思いました
     // 仮説思考、大事なのはもちろんわかるんですが、それと同時に難しい
     // 研究室の先生が心理学の話もよくしてくれていたので、メタ認知とかも難しいよなあと懐かしくなりましたね
 
-    // TODO sato [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/09/04)
+    // sato [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/09/04)
     // https://jflute.hatenadiary.jp/entry/20150727/fivebooks
     // ディズニーの本のおすすめのところにあった以下の文が気に入りました、変数名とかディズニーに関連づけてるのも、気づいたらちょっと嬉しくなれますね
     // そこに少しでも笑顔が入るようなコード書けてたら、やっぱりうれしいじゃんって。
@@ -287,8 +287,14 @@ public class Step02IfForTest extends PlainTestCase {
             }
         }
          */
+        // #1on1: Lambda式は、実際にはとあるクラスのとあるメソッドを定義してnewしてるみたいもの (2026/09/18)
+        // e.g. new AbcConsumer().accept() {}
+        // ← ここの行1: test_メソッド所属
         stageList.forEach(stage -> {
-            // TODO done sato パフォーマンス考慮、毎ループtoString()するとインスタンス多い by jflute (2026/09/04)
+            // ← ここの行2: AbcConsumer@accept()所属
+            // test_メソッドから見たら、別クラス別メソッドの世界。
+
+            // done sato パフォーマンス考慮、毎ループtoString()するとインスタンス多い by jflute (2026/09/04)
             // StringBuilderのまま判定できると良い。
             // final String st = sb.toString();
             //            if (st.contains("ga")) {
@@ -297,7 +303,8 @@ public class Step02IfForTest extends PlainTestCase {
             // StringBuilderの定義を見たらcompareToがあるからそれでいけそうと思ったけど、バージョンが違って実行できない
             // でもこの方法以外でStringBuilderのまま判定する方法はないと思うんだけどどうなんだろう
             // AIにバージョンを上げた場合の実行結果だけ聞いたらいけてそうだったのでdoneにします
-
+            // #1on1: indexOf() の紹介 (2026/09/18)
+            //  e.g. if (sb.indexOf("ga") >= 0) {
             if (ga.toString().compareTo(sb.toString()) == 0) {
                 return;
             }
@@ -327,6 +334,34 @@ public class Step02IfForTest extends PlainTestCase {
     // #1on1: なんで、Lambda式の中で、外側のローカル変数の再代入ができないのか？ (2026/09/04)
     // $なんでだろう？
     // 仕組みが違うのか？
+    // 普通に実行して、できても良さそうなのに。ループでseaに代入して、最後seaの値を出す。
+    //
+    // forEach()メソッドは、Javaキーワード色になっていない。
+    //
+    // #1on1: forEach()メソッドのコードリーディング (2026/09/18)
+    // forEach()メソッドの中で、拡張for文を使っている。
+    // 単なるfor文の代理人みたいなメソッド。文法的にはただのメソッド。
+    //
+    // sea = stage; ができないという話だが...
+    // 自分(test_メソッド)のローカル変数を、別クラス別メソッドに書き換えられたらたまらん。
+    //
+    // Lambda式は別クラス別メソッド。
+    // ローカル変数としてのコンセプトを維持するとなったら、外側のローカル変数は再代入させてはいけない。
+    // もしできちゃうと、時系列的な矛盾も発生しやすく、カオスなプログラムが作りやすくなってしまう。
+    // ローカル変数としてのコンセプトを維持するってのは非常に大事なこと。
+    // 
+    // でも、固定の値 (immutableな変数) であれば、参照はできる。参照だけならカオスは生まれにくい。
+    // なので、isBreakは参照できる。
+    // だけど、sea は参照できない。seaは固定の値ではない (mutableな変数になっている)
+    // Lambda式から見て、seaはいつ変わるかわからない変数なので、それに依存しないように。
+    // 時系列的な偶然性に依存した処理を書けないようにしている。
+    //
+    // こういうバックグランドを理解できるようになったら、文法の当たりを付けやすくなって、
+    // 覚えやすい、想像しやすい、応用しやすい、につながってくると思います。
+
+    // TODO jflute 次回1on1, じゃあforEach()メソッドの存在意義は？ (2026/09/18)
+    // 仕組みはわかった。色々できない理由もわかった。
+    // じゃあなんでそんなできないことだらけのループ作ったの？
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
