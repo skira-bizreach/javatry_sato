@@ -22,7 +22,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author kchan
  */
 public class Step04MethodTest extends PlainTestCase {
 
@@ -35,16 +35,21 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_call_basic() {
         String sea = supplySomething();
-        log(sea); // your answer? =>
+        log(sea); // your answer? => over
     }
+    // 正解
+    // logだと{}で変数を出力？普段soutばかり使っていたので知らないな
+    // 調べた、やはり変数埋め込み用らしい
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_call_many() {
         String sea = functionSomething("mystic");
         consumeSomething(supplySomething());
         runnableSomething();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mysmys
     }
+    // 正解
+    // returnしてなかったら置き変わらないよ
 
     private String functionSomething(String name) {
         String replaced = name.replace("tic", "mys");
@@ -76,8 +81,10 @@ public class Step04MethodTest extends PlainTestCase {
         if (!land) {
             sea = sea + mutable.getStageName().length();
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 910
     }
+    // 正解
+    // setメソッドも久々に見た、なんかちょっと嬉しい
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
         sea++;
@@ -115,8 +122,11 @@ public class Step04MethodTest extends PlainTestCase {
         }
         ++sea;
         sea = inParkCount;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 100
     }
+
+    // 正解
+    // 変数のスコープがややこしい
 
     private void offAnnualPassport(boolean hasAnnualPassport) {
         hasAnnualPassport = false;
@@ -152,12 +162,35 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_making() {
         // use after making these methods
-        //String replaced = replaceCwithB(replaceAwithB("ABC"));
-        //String sea = quote(replaced, "'");
-        //if (isAvailableLogging()) {
-        //    showSea(sea);
-        //}
+        String replaced = replaceCwithB(replaceAwithB("ABC"));
+        String sea = quote(replaced, "'");
+        if (isAvailableLogging()) {
+            showSea(sea);
+        }
     }
 
     // write methods here
+
+    private String replaceAwithB(String s) {
+        return s.replace("A", "B");
+    }
+
+    private String replaceCwithB(String s) {
+        return s.replace("C", "B");
+    }
+
+    private String quote(String s1, String s2) {
+        return s2 + s1 + s2;
+    }
+
+    private Boolean isAvailableLogging() {
+        Boolean availableLogging = true;
+        return availableLogging;
+    }
+
+    private void showSea(String s) {
+        log(s);
+    }
+
+    // BBBが表示されれば正解？
 }

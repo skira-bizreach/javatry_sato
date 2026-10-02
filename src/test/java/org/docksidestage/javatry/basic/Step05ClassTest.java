@@ -23,12 +23,12 @@ import org.docksidestage.unit.PlainTestCase;
  * The test of class. <br>
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう) <br>
- * 
+ *
  * If ambiguous requirement exists, you can determine specification that seems appropriate. <br>
  * (要件が曖昧なところがあれば、適切だと思われる仕様を決めても良いです)
- * 
+ *
  * @author jflute
- * @author your_name_here
+ * @author kchan
  */
 public class Step05ClassTest extends PlainTestCase {
 
@@ -43,28 +43,40 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
         int sea = booth.getQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9
     }
+
+    // 正解
+    // チケット少ないな
+    // あとチケットの金額が安すぎて震えました
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_overpay() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10000 → class修正後は7400
     }
+
+    // 正解
+    // salesProceedsって売り上げ？か？ → 売却代金
+    // お釣りはどうなっているんだ…？？？
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_nosales() {
         TicketBooth booth = new TicketBooth();
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
     }
+
+    // 不正解、null
+    // 最初の購入まではnullだっていうのさっき読んだのに、売ってなかったら0やろ、の気持ちで0って書いた
+    // 確認は大事ですね
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_wrongQuantity() {
         Integer sea = doTest_class_ticket_wrongQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9 → class修正後は10
     }
 
     private Integer doTest_class_ticket_wrongQuantity() {
@@ -79,6 +91,9 @@ public class Step05ClassTest extends PlainTestCase {
         return booth.getQuantity();
     }
 
+    // 正解
+    // お金が足りなくて買えてないのになんでチケット枚数が減るんや…
+
     // ===================================================================================
     //                                                                           Let's fix
     //                                                                           =========
@@ -90,6 +105,7 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = doTest_class_ticket_wrongQuantity();
         log(sea); // should be max quantity, visual check here
     }
+    // 買えなかったらチケットが減らないよ
 
     /**
      * Fix the problem of sales proceeds increased by handed money. (Don't forget to fix also previous exercise answers) <br>
@@ -101,6 +117,7 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = booth.getSalesProceeds();
         log(sea); // should be same as one-day price, visual check here
     }
+    // 売り上げ金額が正しくなったよ
 
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
@@ -108,14 +125,19 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-        //TicketBooth booth = new TicketBooth();
-        //int money = 14000;
-        //int change = booth.buyTwoDayPassport(money);
-        //Integer sea = booth.getSalesProceeds() + change;
-        //log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        int change = booth.buyTwoDayPassport(money);
+        Integer sea = booth.getSalesProceeds() + change;
+        log(sea); // should be same as money
 
         // and show two-day passport quantity here
+        log(booth.getQuantity());
     }
+    // 2dayパスポートの場合、枚数は2枚減るのか、1枚減るのか
+    // 曖昧な部分は定義していいらしいので、1dayが2枚、として2枚減らそう
+    // お釣りが帰ってきて2dayパスポートが買えるようになったよ
+    // 本当にチケットやすいな…
 
     /**
      * Recycle duplicate logics between one-day and two-day by e.g. private method in class. (And confirm result of both before and after) <br>
@@ -123,9 +145,11 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_refactor_recycle() {
         TicketBooth booth = new TicketBooth();
-        booth.buyOneDayPassport(10000);
+        booth.buyTwoDayPassport(15000);
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
     }
+
+    // できた
 
     // ===================================================================================
     //                                                                           Challenge

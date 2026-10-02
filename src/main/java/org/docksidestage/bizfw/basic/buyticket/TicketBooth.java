@@ -25,6 +25,7 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -55,18 +56,73 @@ public class TicketBooth {
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
+    // 修正前
+    //    public void buyOneDayPassport(Integer handedMoney) {
+    //        if (quantity <= 0) {
+    //            throw new TicketSoldOutException("Sold out");
+    //        }
+    //        if (handedMoney < ONE_DAY_PRICE) {
+    //            throw new TicketShortMoneyException("Short money: " + handedMoney);
+    //        } else {
+    //            --quantity;
+    //        }
+    //        if (salesProceeds != null) { // second or more purchase
+    //            salesProceeds = salesProceeds + ONE_DAY_PRICE;
+    //        } else { // first purchase
+    //            salesProceeds = ONE_DAY_PRICE;
+    //        }
+    //    }
+    //
+    //    public int buyTwoDayPassport(Integer handedMoney) {
+    //        if (quantity <= 0) {
+    //            throw new TicketSoldOutException("Sold out");
+    //        }
+    //        if (handedMoney < TWO_DAY_PRICE) {
+    //            throw new TicketShortMoneyException("Short money: " + handedMoney);
+    //        } else {
+    //            quantity -= 2;
+    //        }
+    //        if (salesProceeds != null) { // second or more purchase
+    //            salesProceeds = salesProceeds + TWO_DAY_PRICE;
+    //        } else { // first purchase
+    //            salesProceeds = TWO_DAY_PRICE;
+    //        }
+    //        return handedMoney - TWO_DAY_PRICE;
+    //    }
+
+    // 修正後
     public void buyOneDayPassport(Integer handedMoney) {
+        isSoldOut(quantity);
+        haveEnoughMoney(handedMoney, ONE_DAY_PRICE);
+        --quantity;
+        calculateSalesProceeds(ONE_DAY_PRICE);
+    }
+
+    public int buyTwoDayPassport(Integer handedMoney) {
+        isSoldOut(quantity);
+        haveEnoughMoney(handedMoney, TWO_DAY_PRICE);
+        quantity -= 2;
+        calculateSalesProceeds(TWO_DAY_PRICE);
+        return handedMoney - TWO_DAY_PRICE;
+    }
+
+    private void isSoldOut(int quantity) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        --quantity;
-        if (handedMoney < ONE_DAY_PRICE) {
+    }
+
+    private void haveEnoughMoney(Integer handedMoney, int price) {
+        if (handedMoney < price) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
+    }
+
+    private void calculateSalesProceeds(int price) {
         if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + handedMoney;
+            salesProceeds = salesProceeds + price;
         } else { // first purchase
-            salesProceeds = handedMoney;
+            salesProceeds = price;
         }
     }
 
