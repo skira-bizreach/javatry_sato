@@ -93,8 +93,8 @@ public class TicketBooth {
     // 修正後
     public void buyOneDayPassport(Integer handedMoney) {
         isSoldOut(quantity);
-        haveEnoughMoney(handedMoney, ONE_DAY_PRICE);
         --quantity;
+        haveEnoughMoney(handedMoney, ONE_DAY_PRICE);
         calculateSalesProceeds(ONE_DAY_PRICE);
     }
 

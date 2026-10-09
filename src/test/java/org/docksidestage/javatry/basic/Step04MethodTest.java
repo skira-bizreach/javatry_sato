@@ -171,6 +171,7 @@ public class Step04MethodTest extends PlainTestCase {
 
     // write methods here
 
+    // TODO jflute 次回1on1, できたらメソッド定義位置のお話をする予定 (2026/10/09)
     private String replaceAwithB(String s) {
         return s.replace("A", "B");
     }
@@ -193,4 +194,5 @@ public class Step04MethodTest extends PlainTestCase {
     }
 
     // BBBが表示されれば正解？
+    // #1on1: さすが (2026/10/09)
 }

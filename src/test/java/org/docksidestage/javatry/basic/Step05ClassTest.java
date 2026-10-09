@@ -49,6 +49,8 @@ public class Step05ClassTest extends PlainTestCase {
     // 正解
     // チケット少ないな
     // あとチケットの金額が安すぎて震えました
+    // #1on1: そっかー (2026/10/09)
+    // $悲しい
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_overpay() {
@@ -93,6 +95,7 @@ public class Step05ClassTest extends PlainTestCase {
 
     // 正解
     // お金が足りなくて買えてないのになんでチケット枚数が減るんや…
+    // #1on1: その感覚素晴らしい (2026/10/09)
 
     // ===================================================================================
     //                                                                           Let's fix
@@ -118,6 +121,22 @@ public class Step05ClassTest extends PlainTestCase {
         log(sea); // should be same as one-day price, visual check here
     }
     // 売り上げ金額が正しくなったよ
+
+    // #1on1: バグの種類 (2026/10/09)
+    // お金不足でもチケットが減る問題: 複数行の流れのバグ
+    //  → 1行1行は合ってて、前後関係がおかしいだけ、流れを見ないと気づかない
+    //  → しかも、ShortMoneyが発生しなければ正常に動いちゃう (異常系を発生させないとバグにならない)
+    //
+    // 受け取ったお金の分だけ売上が増えていく問題: 単行のロジックのバグ
+    //  → 比較的、見つけやすい (1行だけ見ればいいので)
+    //
+    // 実装者として、↑の違いがあることを意識して、流れのバグを起こさないように意識。
+    // レビューワーとして、流れのバグは意識しないと見つけにくい。
+    //
+    // +あるふぁ: 変数名がシンプル過ぎると、単行バグも見つけづらくなる
+    // e.g. handedMoney が money だと間違いっぽくなくなる
+
+    // TODO jflute 次回ここから (2026/10/09)
 
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
