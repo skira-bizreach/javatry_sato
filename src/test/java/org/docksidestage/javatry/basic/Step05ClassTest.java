@@ -15,8 +15,10 @@
  */
 package org.docksidestage.javatry.basic;
 
+import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
+import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -144,14 +146,14 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-        TicketBooth booth = new TicketBooth();
-        int money = 14000;
-        int change = booth.buyTwoDayPassport(money);
-        Integer sea = booth.getSalesProceeds() + change;
-        log(sea); // should be same as money
-
-        // and show two-day passport quantity here
-        log(booth.getQuantity());
+        //        TicketBooth booth = new TicketBooth();
+        //        int money = 14000;
+        //        int change = booth.buyTwoDayPassport(money);
+        //        Integer sea = booth.getSalesProceeds() + change;
+        //        log(sea); // should be same as money
+        //
+        //        // and show two-day passport quantity here
+        //        log(booth.getQuantity());
     }
     // 2dayパスポートの場合、枚数は2枚減るのか、1枚減るのか
     // 曖昧な部分は定義していいらしいので、1dayが2枚、として2枚減らそう
@@ -169,6 +171,7 @@ public class Step05ClassTest extends PlainTestCase {
     }
 
     // できた
+    // 改めて見て、何日ぶん買うかまで引数とかにして共通化できるな、と思ったけど、メソッド名指定だからできないのか
 
     // ===================================================================================
     //                                                                           Challenge
@@ -179,13 +182,14 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_return_ticket() {
         // uncomment out after modifying the method
-        //TicketBooth booth = new TicketBooth();
-        //Ticket oneDayPassport = booth.buyOneDayPassport(10000);
-        //log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
-        //log(oneDayPassport.isAlreadyIn()); // should be false
-        //oneDayPassport.doInPark();
-        //log(oneDayPassport.isAlreadyIn()); // should be true
+        TicketBooth booth = new TicketBooth();
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
+        log(oneDayPassport.isAlreadyIn()); // should be false
+        oneDayPassport.doInPark();
+        log(oneDayPassport.isAlreadyIn()); // should be true
     }
+    // 出力みた、あっている
 
     /**
      * Now also you cannot get ticket if two-day passport, so return class that has ticket and change. <br>
@@ -193,13 +197,17 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_return_whole() {
         // uncomment after modifying the method
-        //TicketBooth booth = new TicketBooth();
-        //int handedMoney = 20000;
-        //TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
-        //Ticket twoDayPassport = buyResult.getTicket();
-        //int change = buyResult.getChange();
-        //log(twoDayPassport.getDisplayPrice() + change); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int handedMoney = 20000;
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
+        Ticket twoDayPassport = buyResult.getTicket();
+        int change = buyResult.getChange();
+        log(twoDayPassport.getDisplayPrice() + change); // should be same as money
     }
+
+    // 1dayパスのお釣りはどこいったんや
+    // 戻り値の型を変えると別でエラーが出るのでコメントアウトした
+    // 20000が出力されたのであっているはず？
 
     /**
      * Now you can use only one in spite of two-day passport, so fix Ticket to be able to handle plural days. <br>
@@ -207,7 +215,20 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_usePluralDays() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        int handedMoney = 20000;
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
+        Ticket twoDayPassport = buyResult.getTicket();
+        twoDayPassport.doInPark();
+        log(twoDayPassport.getParkCount()); // should be 1
+        twoDayPassport.doInPark();
+        log(twoDayPassport.getParkCount()); // should be 2
     }
+
+    // どうやって1dayと2dayを区別するかを考えた時に、チケットの金額かなと思った
+    // 本当はチケットクラスにそもそも何日ぶんのチケットを買うか、を渡せるようにして、クラス内で持つ方がいいのかなと思ったり
+    // switch文とかif文だと、さらにチケットの種類が増えた時にコードが増える
+    // ただまあここを治すと、他で呼び出している箇所にも影響があるので、一旦この方法でやった
 
     /**
      * Accurately determine whether type of bought ticket is two-day passport or not by if-statement. (fix Ticket classes if needed) <br>
@@ -215,22 +236,24 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_whetherTicketType() {
         // uncomment when you implement this exercise
-        //TicketBooth booth = new TicketBooth();
-        //Ticket oneDayPassport = booth.buyOneDayPassport(10000);
-        //showTicketIfNeeds(oneDayPassport);
-        //TicketBuyResult buyResult = booth.buyTwoDayPassport(10000);
-        //Ticket twoDayPassport = buyResult.getTicket();
-        //showTicketIfNeeds(twoDayPassport);
+        TicketBooth booth = new TicketBooth();
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        showTicketIfNeeds(oneDayPassport);
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(20000);
+        Ticket twoDayPassport = buyResult.getTicket();
+        showTicketIfNeeds(twoDayPassport);
     }
 
     // uncomment when you implement this exercise
-    //private void showTicketIfNeeds(Ticket ticket) {
-    //    if (xxxxxxxxxxxxxxxxxx) { // write determination for two-day passport
-    //        log("two-day passport");
-    //    } else {
-    //        log("other");
-    //    }
-    //}
+    private void showTicketIfNeeds(Ticket ticket) {
+        if (ticket.getMax() == 2) { // write determination for two-day passport
+            log("two-day passport");
+        } else {
+            log("other");
+        }
+    }
+
+    // なぜか2dayパスポートを買う時に10000しか渡さず買えないコードになっていた
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -241,7 +264,14 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_wonder_four() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult buyResult = booth.buyFourDayPassport(30000);
+        log(buyResult.getChange());
+        Ticket passport = buyResult.getTicket();
+        log(passport.getMax());
     }
+    // 日数が増えるほど、メソッドをまとめたくなる
+    // 最近コードを書かなさすぎて、コードを書くのが遅くなっているのを感じてやばい
 
     /**
      * Fix it to be able to buy night-only two-day passport (price is 7400), which can be used at only night. <br>
@@ -250,6 +280,12 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_moreFix_wonder_night() {
         // your confirmation code here
     }
+
+    // 時間がなくなったので次はここから
+    // 夜は17時からにして、時刻を見て比較する
+    // 夜だけのチケット、って入場時に判別しないといけない
+    // あと、これまで金額で何日入れるかを判定していたけど、これと1dayパスポートの値段が同じなので、金額での判定はやめる
+    // 購入したいチケットが何日使えるか、とチケットの種類（all、night）を渡して、判別できるようにする必要がありそう
 
     // ===================================================================================
     //                                                                         Bonus Stage

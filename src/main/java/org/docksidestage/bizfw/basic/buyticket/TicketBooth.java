@@ -26,6 +26,8 @@ public class TicketBooth {
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
+    private static final int FOUR_DAY_PRICE = 22400;
+    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -91,19 +93,31 @@ public class TicketBooth {
     //    }
 
     // 修正後
-    public void buyOneDayPassport(Integer handedMoney) {
+    public Ticket buyOneDayPassport(Integer handedMoney) {
         isSoldOut(quantity);
-        --quantity;
         haveEnoughMoney(handedMoney, ONE_DAY_PRICE);
+        --quantity;
         calculateSalesProceeds(ONE_DAY_PRICE);
+        Ticket oneDayPassport = new Ticket(ONE_DAY_PRICE);
+        return oneDayPassport;
     }
 
-    public int buyTwoDayPassport(Integer handedMoney) {
+    public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
         isSoldOut(quantity);
         haveEnoughMoney(handedMoney, TWO_DAY_PRICE);
         quantity -= 2;
         calculateSalesProceeds(TWO_DAY_PRICE);
-        return handedMoney - TWO_DAY_PRICE;
+        TicketBuyResult buyResult = new TicketBuyResult(TWO_DAY_PRICE, handedMoney);
+        return buyResult;
+    }
+
+    public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
+        isSoldOut(quantity);
+        haveEnoughMoney(handedMoney, FOUR_DAY_PRICE);
+        quantity -= 4;
+        calculateSalesProceeds(FOUR_DAY_PRICE);
+        TicketBuyResult buyResult = new TicketBuyResult(FOUR_DAY_PRICE, handedMoney);
+        return buyResult;
     }
 
     private void isSoldOut(int quantity) {

@@ -25,22 +25,41 @@ public class Ticket {
     //                                                                           =========
     private final int displayPrice; // written on ticket, park guest can watch this
     private boolean alreadyIn; // true means this ticket is unavailable
+    private int inParkCount;
+    private int max;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
     public Ticket(int displayPrice) {
         this.displayPrice = displayPrice;
+        this.inParkCount = 0;
+        switch (displayPrice) {
+        case 7400:
+            max = 1;
+            break;
+        case 13200:
+            max = 2;
+            break;
+        case 22400:
+            max = 4;
+            break;
+        }
     }
 
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
     public void doInPark() {
-        if (alreadyIn) {
+        //                if (alreadyIn) {
+        //                    throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
+        //                }
+        alreadyIn = true;
+
+        if (inParkCount == max) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
-        alreadyIn = true;
+        inParkCount++;
     }
 
     // ===================================================================================
@@ -48,6 +67,13 @@ public class Ticket {
     //                                                                            ========
     public int getDisplayPrice() {
         return displayPrice;
+    }
+
+    public int getParkCount() {
+        return inParkCount;
+    }
+    public int getMax() {
+        return max;
     }
 
     public boolean isAlreadyIn() {
