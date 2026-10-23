@@ -138,7 +138,7 @@ public class Step05ClassTest extends PlainTestCase {
     // +あるふぁ: 変数名がシンプル過ぎると、単行バグも見つけづらくなる
     // e.g. handedMoney が money だと間違いっぽくなくなる
 
-    // TODO jflute 次回ここから (2026/10/09)
+    // done jflute 次回ここから (2026/10/09)
 
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
@@ -172,6 +172,9 @@ public class Step05ClassTest extends PlainTestCase {
 
     // できた
     // 改めて見て、何日ぶん買うかまで引数とかにして共通化できるな、と思ったけど、メソッド名指定だからできないのか
+    // #1on1: 既存の業務を解析して判断しているのGood (2026/10/23)
+    // 提供側が日数固定の商品を出すスタイルのビジネスになっている。
+    // 実装としては、メソッドで日数固定の商品を表現して、縛りを入れている。
 
     // ===================================================================================
     //                                                                           Challenge
@@ -244,6 +247,7 @@ public class Step05ClassTest extends PlainTestCase {
         showTicketIfNeeds(twoDayPassport);
     }
 
+    // TODO jflute 次回1on1ここから (2026/10/23)
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
         if (ticket.getMax() == 2) { // write determination for two-day passport

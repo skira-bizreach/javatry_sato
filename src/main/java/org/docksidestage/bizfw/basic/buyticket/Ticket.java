@@ -23,6 +23,12 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // #1on1: いいね、inParkCount, max どちらも誤解のない直感的な変数名 (2026/10/23)
+    // TODO sato max何？ってのは少し表現したいところ e.g. maxDays by jflute (2026/10/23)
+    // TODO sato maxはfinal付けられないだろうか？ by jflute (2026/10/23)
+    // ただ、今finalを付けると Constructorで max初期化されてないエラーになる。
+    // switch case でどこにもヒットしないことを考慮されていないので文法的にどうしてもそうなる。
+    // なので網羅させてfinalを付けられるようにしてみましょう。
     private final int displayPrice; // written on ticket, park guest can watch this
     private boolean alreadyIn; // true means this ticket is unavailable
     private int inParkCount;
@@ -72,6 +78,7 @@ public class Ticket {
     public int getParkCount() {
         return inParkCount;
     }
+
     public int getMax() {
         return max;
     }
