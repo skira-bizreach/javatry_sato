@@ -37,7 +37,7 @@ public class TicketBuyResult {
         // 結果という概念を表現するオブジェクトなので、単なる入れ物感が強い。
         // (結果はあくまで計算された結果を持っているだけで、結果自体が計算をするわけじゃないイメージ)
         //
-        // もし、ResultCreator, ResultProvider っていうメソッド名だったら話は変わってくる。
+        // もし、ResultCreator, ResultProvider っていうクラス名だったら話は変わってくる。
         // それだったら calcuateChange() 全然アリ。さらに、issueTicket() とかも。
         //
         // TODO sato なので、ここでの計算じゃなく別のところに by jflute (2026/10/23)
