@@ -250,7 +250,7 @@ public class Step05ClassTest extends PlainTestCase {
     // TODO jflute 次回1on1ここから (2026/10/23)
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
-        if (ticket.getMax() == 2) { // write determination for two-day passport
+        if (ticket.getMaxDays() == 2) { // write determination for two-day passport
             log("two-day passport");
         } else {
             log("other");
@@ -272,7 +272,7 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBuyResult buyResult = booth.buyFourDayPassport(30000);
         log(buyResult.getChange());
         Ticket passport = buyResult.getTicket();
-        log(passport.getMax());
+        log(passport.getMaxDays());
     }
     // 日数が増えるほど、メソッドをまとめたくなる
     // 最近コードを書かなさすぎて、コードを書くのが遅くなっているのを感じてやばい
@@ -283,6 +283,11 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_wonder_night() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult buyResult = booth.buyNightOnlyPassport(30000);
+        log(buyResult.getChange());
+        Ticket passport = buyResult.getTicket();
+        passport.doInPark();
     }
 
     // 時間がなくなったので次はここから
@@ -290,6 +295,13 @@ public class Step05ClassTest extends PlainTestCase {
     // 夜だけのチケット、って入場時に判別しないといけない
     // あと、これまで金額で何日入れるかを判定していたけど、これと1dayパスポートの値段が同じなので、金額での判定はやめる
     // 購入したいチケットが何日使えるか、とチケットの種類（all、night）を渡して、判別できるようにする必要がありそう
+    // 種類をenumとかで定義するか？と思ったけど、色々増えてしまうな
+    // 種類が違うってことは何か違うものがある→入園可能時間とかで管理できるか？
+    // 入園可能時間でいけそう
+    // コンストラクタの形を変えたらstep06でエラーになったので、コメントアウトしました
+
+    // 17時前に試したらちゃんと入れなかった
+    // 17時以降は行けた
 
     // ===================================================================================
     //                                                                         Bonus Stage

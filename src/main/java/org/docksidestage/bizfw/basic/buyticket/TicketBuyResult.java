@@ -1,20 +1,31 @@
 package org.docksidestage.bizfw.basic.buyticket;
 
-// TODO sato クラスのJavaDocお願いします by jflute (2026/10/23)
-public class TicketBuyResult {
-    // TODO sato handedMoney も final で良いのでは？ by jflute (2026/10/23)
-    private final int displayPrice;
-    private int handedMoney;
+import java.time.LocalTime;
 
-    public TicketBuyResult(int displayPrice, int money) {
-        this.displayPrice = displayPrice;
-        this.handedMoney = money;
+/**
+ * @author sato
+ */
+
+// TODO done sato クラスのJavaDocお願いします by jflute (2026/10/23)
+public class TicketBuyResult {
+    // TODO done sato handedMoney も final で良いのでは？ by jflute (2026/10/23)
+    // 変更されないのでfinalにしました
+    private final int displayPrice;
+    private final int handedMoney;
+    private final int change;
+    private final Ticket ticket;
+
+    public TicketBuyResult(int price, int money, LocalTime time) {
+        displayPrice = price;
+        handedMoney = money;
+        change = handedMoney - displayPrice;
+        ticket = new Ticket(displayPrice, time);
     }
 
-    // TODO sato getChange()と同じように、Ticketの発行はここじゃない方が良いかなと by jflute (2026/10/23)
+    // TODO done sato getChange()と同じように、Ticketの発行はここじゃない方が良いかなと by jflute (2026/10/23)
+    // 同じようにコンストラクタで発行するようにしてみた
     public Ticket getTicket() {
-        Ticket passport = new Ticket(displayPrice);
-        return passport;
+        return ticket;
     }
 
     public int getChange() {
@@ -40,8 +51,11 @@ public class TicketBuyResult {
         // もし、ResultCreator, ResultProvider っていうクラス名だったら話は変わってくる。
         // それだったら calcuateChange() 全然アリ。さらに、issueTicket() とかも。
         //
-        // TODO sato なので、ここでの計算じゃなく別のところに by jflute (2026/10/23)
-        return handedMoney - displayPrice;
+        // TODO done sato なので、ここでの計算じゃなく別のところに by jflute (2026/10/23)
+
+        // じゃあどこで計算すればいいんだ？を考えた時に、別メソッドを用意してもそれを呼ぶならあんまり変わらないしなあと思った
+        // 現状の形ならコンストラクタ内で渡された金額とチケット金額が両方解ってるので、そこで計算するのがいいか？と思った
+        return change;
     }
 
 }

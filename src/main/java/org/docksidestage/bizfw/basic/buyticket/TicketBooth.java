@@ -15,6 +15,8 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+import java.time.LocalTime;
+
 /**
  * @author jflute
  */
@@ -96,33 +98,42 @@ public class TicketBooth {
     public Ticket buyOneDayPassport(Integer handedMoney) {
         // #1on1: いいね、業務の流れがわかりやすく、privateメソッドの粒度がいい感じ (2026/10/23)
         // (粒度がバラバラだと、読みづらくなるので)
-        isSoldOut(quantity);
-        haveEnoughMoney(handedMoney, ONE_DAY_PRICE);
+        throwIfSoldOut(quantity);
+        assertEnoughMoney(handedMoney, ONE_DAY_PRICE);
         --quantity;
         calculateSalesProceeds(ONE_DAY_PRICE);
-        Ticket oneDayPassport = new Ticket(ONE_DAY_PRICE);
+        Ticket oneDayPassport = new Ticket(ONE_DAY_PRICE, LocalTime.of(9, 0));
         return oneDayPassport;
     }
 
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        isSoldOut(quantity);
-        haveEnoughMoney(handedMoney, TWO_DAY_PRICE);
+        throwIfSoldOut(quantity);
+        assertEnoughMoney(handedMoney, TWO_DAY_PRICE);
         quantity -= 2;
         calculateSalesProceeds(TWO_DAY_PRICE);
-        TicketBuyResult buyResult = new TicketBuyResult(TWO_DAY_PRICE, handedMoney);
+        TicketBuyResult buyResult = new TicketBuyResult(TWO_DAY_PRICE, handedMoney, LocalTime.of(9, 0));
         return buyResult;
     }
 
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
-        isSoldOut(quantity);
-        haveEnoughMoney(handedMoney, FOUR_DAY_PRICE);
+        throwIfSoldOut(quantity);
+        assertEnoughMoney(handedMoney, FOUR_DAY_PRICE);
         quantity -= 4;
         calculateSalesProceeds(FOUR_DAY_PRICE);
-        TicketBuyResult buyResult = new TicketBuyResult(FOUR_DAY_PRICE, handedMoney);
+        TicketBuyResult buyResult = new TicketBuyResult(FOUR_DAY_PRICE, handedMoney, LocalTime.of(9, 0));
         return buyResult;
     }
 
-    // TODO sato isってメソッド名だと、ほぼほぼbooleanを戻すイメージをしてしまう by jflute (2026/10/23)
+    public TicketBuyResult buyNightOnlyPassport(Integer handedMoney) {
+        throwIfSoldOut(quantity);
+        assertEnoughMoney(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE);
+        quantity -= 2;
+        calculateSalesProceeds(NIGHT_ONLY_TWO_DAY_PRICE);
+        TicketBuyResult buyResult = new TicketBuyResult(NIGHT_ONLY_TWO_DAY_PRICE, handedMoney, LocalTime.of(17, 0));
+        return buyResult;
+    }
+
+    // TODO done sato isってメソッド名だと、ほぼほぼbooleanを戻すイメージをしてしまう by jflute (2026/10/23)
     // 例外をthrowするのであれば、checkSoldOut() とか assertQuantityExists() とか。
     // checkSoldOut(): 
     // assertQuantityExists():
@@ -150,8 +161,10 @@ public class TicketBooth {
     // (checkだと、どっちで例外がthrowされるのか？そこも曖昧になる)
     // (SoldOutという言葉を重視するならちょっと使いづらいけど、そうじゃないときはよく使われる方法)
     //
-    // TODO sato 少なくともisはやめて、↑の何かにしてみましょう by jflute (2026/10/23)
-    private void isSoldOut(int quantity) {
+    // TODO done sato 少なくともisはやめて、↑の何かにしてみましょう by jflute (2026/10/23)
+
+    // 何をしているかがよりわかりやすいかなと思ってthrowIfにしてみました
+    private void throwIfSoldOut(int quantity) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
@@ -160,9 +173,13 @@ public class TicketBooth {
     // #1on1: isSoldOut に対して hasEnoughMoney のイメージだったのがhaveになってるだけなのかなと。 (2026/10/23)
     // booleanイメージな感じだったら、haveよりはhasがよく使われる。(三単現の動詞)
     // なんにせよ元々booleanではないので、throwするメソッドなので、それを表現するメソッドの方が良い。
-    // TODO sato もし↑がcheckSoldOutだったら、こっちもcheckShortMoneyの方が統一感はある by jflute (2026/10/23)
+    // TODO done sato もし↑がcheckSoldOutだったら、こっちもcheckShortMoneyの方が統一感はある by jflute (2026/10/23)
     // 一方で、こっちはすでにEnoughMoneyという言葉なので、assertEnoughMoneyが合う。
-    private void haveEnoughMoney(Integer handedMoney, int price) {
+
+    // 上のメソッドをthrowIfにしたので、こっちを何にするか迷いどころですね
+    // assertだと上のメソッドもassertで統一した方がいいのかなあとか思ったり
+    // 一旦assertにしておきました
+    private void assertEnoughMoney(Integer handedMoney, int price) {
         if (handedMoney < price) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }

@@ -15,6 +15,8 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+import java.time.LocalTime;
+
 /**
  * @author jflute
  */
@@ -24,32 +26,68 @@ public class Ticket {
     //                                                                           Attribute
     //                                                                           =========
     // #1on1: いいね、inParkCount, max どちらも誤解のない直感的な変数名 (2026/10/23)
-    // TODO sato max何？ってのは少し表現したいところ e.g. maxDays by jflute (2026/10/23)
-    // TODO sato maxはfinal付けられないだろうか？ by jflute (2026/10/23)
+    // TODO done sato max何？ってのは少し表現したいところ e.g. maxDays by jflute (2026/10/23)
+    // 入園できる最大日数なので、Daysにした
+
+    // TODO done sato maxはfinal付けられないだろうか？ by jflute (2026/10/23)
+    // defaultを設定しました
+
     // ただ、今finalを付けると Constructorで max初期化されてないエラーになる。
     // switch case でどこにもヒットしないことを考慮されていないので文法的にどうしてもそうなる。
     // なので網羅させてfinalを付けられるようにしてみましょう。
     private final int displayPrice; // written on ticket, park guest can watch this
     private boolean alreadyIn; // true means this ticket is unavailable
     private int inParkCount;
-    private int max;
+    private final int maxDays;
+    private final LocalTime entryAvailableTime;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice) {
+    //    public Ticket(int displayPrice) {
+    //        this.displayPrice = displayPrice;
+    //        this.inParkCount = 0;
+    //        switch (displayPrice) {
+    //        case 7400:
+    //            maxDays = 1;
+    //            break;
+    //        case 13200:
+    //            maxDays = 2;
+    //            break;
+    //        case 22400:
+    //            maxDays = 4;
+    //            break;
+    //        default:
+    //            throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
+    //        }
+    //    }
+
+    public Ticket(int displayPrice, LocalTime time) {
         this.displayPrice = displayPrice;
         this.inParkCount = 0;
-        switch (displayPrice) {
-        case 7400:
-            max = 1;
-            break;
-        case 13200:
-            max = 2;
-            break;
-        case 22400:
-            max = 4;
-            break;
+        this.entryAvailableTime = time;
+        if (entryAvailableTime.equals(LocalTime.of(17, 0))) {
+            switch (displayPrice) {
+            case 7400:
+                maxDays = 2;
+                break;
+            default:
+                throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
+            }
+        } else {
+            switch (displayPrice) {
+            case 7400:
+                maxDays = 1;
+                break;
+            case 13200:
+                maxDays = 2;
+                break;
+            case 22400:
+                maxDays = 4;
+                break;
+            default:
+                throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
+            }
         }
     }
 
@@ -60,9 +98,13 @@ public class Ticket {
         //                if (alreadyIn) {
         //                    throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         //                }
+        if (entryAvailableTime.equals(LocalTime.of(17, 0))) {
+            throw new IllegalStateException("このチケットでは17時まで入園できません");
+        }
+
         alreadyIn = true;
 
-        if (inParkCount == max) {
+        if (inParkCount == maxDays) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
         inParkCount++;
@@ -79,8 +121,8 @@ public class Ticket {
         return inParkCount;
     }
 
-    public int getMax() {
-        return max;
+    public int getMaxDays() {
+        return maxDays;
     }
 
     public boolean isAlreadyIn() {
