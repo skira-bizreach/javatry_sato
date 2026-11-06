@@ -17,6 +17,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 
 import java.time.LocalTime;
 
+// TODO sato せっかくなので @author を追加でお願いします by jflute (2026/11/06)
 /**
  * @author jflute
  */
@@ -115,6 +116,8 @@ public class TicketBooth {
         return buyResult;
     }
 
+    // #1on1: コピペしない構造の工夫も必要だけど、いざコピペするときに失敗しないテクニックもあると良い (2026/11/06)
+    // 指差し確認、新規テキストでの一括置換、検索によるチェックなどなど
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
         throwIfSoldOut(quantity);
         assertEnoughMoney(handedMoney, FOUR_DAY_PRICE);
@@ -133,7 +136,7 @@ public class TicketBooth {
         return buyResult;
     }
 
-    // TODO done sato isってメソッド名だと、ほぼほぼbooleanを戻すイメージをしてしまう by jflute (2026/10/23)
+    // done sato isってメソッド名だと、ほぼほぼbooleanを戻すイメージをしてしまう by jflute (2026/10/23)
     // 例外をthrowするのであれば、checkSoldOut() とか assertQuantityExists() とか。
     // checkSoldOut(): 
     // assertQuantityExists():
@@ -161,7 +164,7 @@ public class TicketBooth {
     // (checkだと、どっちで例外がthrowされるのか？そこも曖昧になる)
     // (SoldOutという言葉を重視するならちょっと使いづらいけど、そうじゃないときはよく使われる方法)
     //
-    // TODO done sato 少なくともisはやめて、↑の何かにしてみましょう by jflute (2026/10/23)
+    // done sato 少なくともisはやめて、↑の何かにしてみましょう by jflute (2026/10/23)
 
     // 何をしているかがよりわかりやすいかなと思ってthrowIfにしてみました
     private void throwIfSoldOut(int quantity) {
@@ -173,12 +176,13 @@ public class TicketBooth {
     // #1on1: isSoldOut に対して hasEnoughMoney のイメージだったのがhaveになってるだけなのかなと。 (2026/10/23)
     // booleanイメージな感じだったら、haveよりはhasがよく使われる。(三単現の動詞)
     // なんにせよ元々booleanではないので、throwするメソッドなので、それを表現するメソッドの方が良い。
-    // TODO done sato もし↑がcheckSoldOutだったら、こっちもcheckShortMoneyの方が統一感はある by jflute (2026/10/23)
+    // done sato もし↑がcheckSoldOutだったら、こっちもcheckShortMoneyの方が統一感はある by jflute (2026/10/23)
     // 一方で、こっちはすでにEnoughMoneyという言葉なので、assertEnoughMoneyが合う。
 
     // 上のメソッドをthrowIfにしたので、こっちを何にするか迷いどころですね
     // assertだと上のメソッドもassertで統一した方がいいのかなあとか思ったり
     // 一旦assertにしておきました
+    // #1on1: SoldOutという言葉を重視したかったということなのでまあ御愛嬌の範疇なのでOK (2026/11/06)
     private void assertEnoughMoney(Integer handedMoney, int price) {
         if (handedMoney < price) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);

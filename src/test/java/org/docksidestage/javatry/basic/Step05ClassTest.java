@@ -247,9 +247,16 @@ public class Step05ClassTest extends PlainTestCase {
         showTicketIfNeeds(twoDayPassport);
     }
 
-    // TODO jflute 次回1on1ここから (2026/10/23)
+    // done jflute 次回1on1ここから (2026/10/23)
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
+        // #1on1: NightOnlyは入って良いのかな？ (2026/11/06)
+        // $あっNightも入る、今思った。書いた時はNightOnlyがなかった。
+        // NightOnlyのエクササイズに来た時に、「あっ、あれやばい」って思えたか？
+        // 元々は日数がチケット種別の識別子だったけど、新しい仕様追加でそれが変わってしまった。
+        // シンプルな仕様時代の曖昧な概念が、新しい仕様追加で影響出るパターン。
+        // 本来、日数の判定と、種別の判定というのは別物。(でもシンプルだったからたまたま一致しちゃってた)
+        // TODO sato 修行++: 他の特殊なtwoDay(Nightなど)が入らないようにifを修正してみましょう by jflute (2026/11/06)
         if (ticket.getMaxDays() == 2) { // write determination for two-day passport
             log("two-day passport");
         } else {
@@ -275,7 +282,13 @@ public class Step05ClassTest extends PlainTestCase {
         log(passport.getMaxDays());
     }
     // 日数が増えるほど、メソッドをまとめたくなる
+    // #1on1: リファクタリング課題のところでやっていきましょう (2026/11/06)
+
     // 最近コードを書かなさすぎて、コードを書くのが遅くなっているのを感じてやばい
+    // #1on1: 読むスキルを高めるための "コードを書く" という手段もあるので確かにやばい (2026/11/06)
+    // まあjavatryが少しでもその機会になれば。「物事を考えること」にフォーカスを当ててスキルアップ。
+    // まあまあ深く考えず、今目の前のこと一生懸命(最大限/手加減せず)立ち向かっていけば根本のスキルが上がって、
+    // いざ別の仕事するとか内容が少しかわるとかあっても応用できる。
 
     /**
      * Fix it to be able to buy night-only two-day passport (price is 7400), which can be used at only night. <br>
@@ -299,9 +312,12 @@ public class Step05ClassTest extends PlainTestCase {
     // 種類が違うってことは何か違うものがある→入園可能時間とかで管理できるか？
     // 入園可能時間でいけそう
     // コンストラクタの形を変えたらstep06でエラーになったので、コメントアウトしました
+    // TODO sato 後でしっかり既存コード(step6)の辻褄が合うように修正しましょう by jflute (2026/11/06)
 
     // 17時前に試したらちゃんと入れなかった
     // 17時以降は行けた
+    // TODO sato 修行++: 自動テストが何時に動くかわからないので... by jflute (2026/11/06)
+    // 何時に動いても、17時前と17時以降の両方の分岐のテストができるように工夫してみましょう。
 
     // ===================================================================================
     //                                                                         Bonus Stage
