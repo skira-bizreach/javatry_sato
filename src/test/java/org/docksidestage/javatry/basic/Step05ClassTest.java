@@ -279,7 +279,6 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBuyResult buyResult = booth.buyFourDayPassport(30000);
         log(buyResult.getChange());
         Ticket passport = buyResult.getTicket();
-        log(passport.getMaxDays());
     }
     // 日数が増えるほど、メソッドをまとめたくなる
     // #1on1: リファクタリング課題のところでやっていきましょう (2026/11/06)
@@ -326,6 +325,19 @@ public class Step05ClassTest extends PlainTestCase {
      * Refactor the code to the best readable code you can think of. <br>
      * (自分の中で思う最高に可読性の高いコードにリファクタリングしてみましょう)
      */
+
+    // 今の問題点を考えてみる
+    // TicketBoothに同じようなメソッドが増えている
+    // 日数と種別を渡して、どのパスポートかを判定したい
+    // でもTicketクラスのコンストラクタはdisplayPriceしか渡せない
+    // お客さんの流れをかんがえる
+    // チケットブースにきて、このチケットをください、と指定して、お金を渡す
+    // チケットブースは、選択されたチケットの種類を確認し、お金を受け取って、お金が足りていればそのチケットを発行して渡す、そしてお釣りを返す
+    // チケットを発行するときに、日数と種別を指定する
+    // コンストラクタは別に複数書けるけど、金額だけのコンストラクタを残しても意味がない
+    // いったん他に思いつかないので、コンストラクタを増やす、けどその場しのぎだなあ
+    // メソッドをまとめたけど、結局分岐してて、これもうーんって感じ
+    // リファクタで迷って時間使ってしまった、1on1でこのあたり相談させてください
     public void test_class_moreFix_yourRefactoring() {
         // your confirmation code here
     }

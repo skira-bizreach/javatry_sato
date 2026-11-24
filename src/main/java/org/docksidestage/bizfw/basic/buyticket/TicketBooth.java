@@ -15,11 +15,11 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
-import java.time.LocalTime;
+// TODO done sato せっかくなので @author を追加でお願いします by jflute (2026/11/06)
 
-// TODO sato せっかくなので @author を追加でお願いします by jflute (2026/11/06)
 /**
  * @author jflute
+ * @author sato
  */
 public class TicketBooth {
 
@@ -103,7 +103,7 @@ public class TicketBooth {
         assertEnoughMoney(handedMoney, ONE_DAY_PRICE);
         --quantity;
         calculateSalesProceeds(ONE_DAY_PRICE);
-        Ticket oneDayPassport = new Ticket(ONE_DAY_PRICE, LocalTime.of(9, 0));
+        Ticket oneDayPassport = new Ticket(ONE_DAY_PRICE, 1, TicketType.ALL_DAY);
         return oneDayPassport;
     }
 
@@ -112,7 +112,7 @@ public class TicketBooth {
         assertEnoughMoney(handedMoney, TWO_DAY_PRICE);
         quantity -= 2;
         calculateSalesProceeds(TWO_DAY_PRICE);
-        TicketBuyResult buyResult = new TicketBuyResult(TWO_DAY_PRICE, handedMoney, LocalTime.of(9, 0));
+        TicketBuyResult buyResult = new TicketBuyResult(TWO_DAY_PRICE, handedMoney, 2, TicketType.ALL_DAY);
         return buyResult;
     }
 
@@ -123,7 +123,7 @@ public class TicketBooth {
         assertEnoughMoney(handedMoney, FOUR_DAY_PRICE);
         quantity -= 4;
         calculateSalesProceeds(FOUR_DAY_PRICE);
-        TicketBuyResult buyResult = new TicketBuyResult(FOUR_DAY_PRICE, handedMoney, LocalTime.of(9, 0));
+        TicketBuyResult buyResult = new TicketBuyResult(FOUR_DAY_PRICE, handedMoney, 4, TicketType.ALL_DAY);
         return buyResult;
     }
 
@@ -132,7 +132,28 @@ public class TicketBooth {
         assertEnoughMoney(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE);
         quantity -= 2;
         calculateSalesProceeds(NIGHT_ONLY_TWO_DAY_PRICE);
-        TicketBuyResult buyResult = new TicketBuyResult(NIGHT_ONLY_TWO_DAY_PRICE, handedMoney, LocalTime.of(17, 0));
+        TicketBuyResult buyResult = new TicketBuyResult(NIGHT_ONLY_TWO_DAY_PRICE, handedMoney, 2, TicketType.NIGHT_ONLY);
+        return buyResult;
+    }
+
+    public TicketBuyResult buyPassport(Integer handedMoney, int maxDays, TicketType ticketType) {
+        throwIfSoldOut(quantity);
+        int ticketPrice;
+        if (maxDays == 1 && ticketType == TicketType.ALL_DAY)
+            ticketPrice = ONE_DAY_PRICE;
+        else if (maxDays == 2 && ticketType == TicketType.ALL_DAY)
+            ticketPrice = TWO_DAY_PRICE;
+        else if (maxDays == 4 && ticketType == TicketType.ALL_DAY)
+            ticketPrice = FOUR_DAY_PRICE;
+        else if (maxDays == 2 && ticketType == TicketType.NIGHT_ONLY)
+            ticketPrice = NIGHT_ONLY_TWO_DAY_PRICE;
+        else
+            throw new IllegalArgumentException("Invalid combination of maxDays and ticketType");
+
+        assertEnoughMoney(handedMoney, ticketPrice);
+        quantity -= maxDays;
+        calculateSalesProceeds(ticketPrice);
+        TicketBuyResult buyResult = new TicketBuyResult(ticketPrice, handedMoney, maxDays, ticketType);
         return buyResult;
     }
 

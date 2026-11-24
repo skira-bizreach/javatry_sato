@@ -15,8 +15,6 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
-import java.time.LocalTime;
-
 /**
  * @author jflute
  */
@@ -39,57 +37,59 @@ public class Ticket {
     private boolean alreadyIn; // true means this ticket is unavailable
     private int inParkCount;
     private final int maxDays;
-    private final LocalTime entryAvailableTime;
+    private final TicketType ticketType;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    //    public Ticket(int displayPrice) {
-    //        this.displayPrice = displayPrice;
-    //        this.inParkCount = 0;
-    //        switch (displayPrice) {
-    //        case 7400:
-    //            maxDays = 1;
-    //            break;
-    //        case 13200:
-    //            maxDays = 2;
-    //            break;
-    //        case 22400:
-    //            maxDays = 4;
-    //            break;
-    //        default:
-    //            throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
-    //        }
-    //    }
-
-    // TODO jflute 次回、ここのConstructorのレビュー一緒に (2026/11/06)
-    public Ticket(int displayPrice, LocalTime time) {
+    public Ticket(int displayPrice) {
         this.displayPrice = displayPrice;
         this.inParkCount = 0;
-        this.entryAvailableTime = time;
-        if (entryAvailableTime.equals(LocalTime.of(17, 0))) {
-            switch (displayPrice) {
-            case 7400:
-                maxDays = 2;
-                break;
-            default:
-                throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
-            }
-        } else {
-            switch (displayPrice) {
-            case 7400:
-                maxDays = 1;
-                break;
-            case 13200:
-                maxDays = 2;
-                break;
-            case 22400:
-                maxDays = 4;
-                break;
-            default:
-                throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
-            }
+        this.ticketType = TicketType.ALL_DAY;
+        switch (displayPrice) {
+        case 7400:
+            maxDays = 1;
+            break;
+        case 13200:
+            maxDays = 2;
+            break;
+        case 22400:
+            maxDays = 4;
+            break;
+        default:
+            throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
         }
+    }
+
+    // TODO jflute 次回、ここのConstructorのレビュー一緒に (2026/11/06)
+    public Ticket(int displayPrice, int maxDays, TicketType ticketType) {
+        this.displayPrice = displayPrice;
+        this.inParkCount = 0;
+        this.maxDays = maxDays;
+        this.ticketType = ticketType;
+        //            if (ticketType == TicketType.NIGHT_ONLY) {
+        //                switch (displayPrice) {
+        //                case 7400:
+        //                    maxDays = 2;
+        //                    break;
+        //                default:
+        //                    throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
+        //                }
+        //            } else {
+        //                switch (displayPrice) {
+        //                case 7400:
+        //                    maxDays = 1;
+        //                    break;
+        //                case 13200:
+        //                    maxDays = 2;
+        //                    break;
+        //                case 22400:
+        //                    maxDays = 4;
+        //                    break;
+        //                default:
+        //                    throw new IllegalArgumentException("登録されていないチケットの値段です" + displayPrice);
+        //                }
+        //            }
     }
 
     // ===================================================================================
@@ -99,7 +99,7 @@ public class Ticket {
         //                if (alreadyIn) {
         //                    throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         //                }
-        if (entryAvailableTime.equals(LocalTime.of(17, 0))) {
+        if (ticketType == TicketType.NIGHT_ONLY) {
             throw new IllegalStateException("このチケットでは17時まで入園できません");
         }
 
