@@ -8,14 +8,14 @@ package org.docksidestage.bizfw.basic.buyticket;
 public class TicketBuyResult {
     // done sato handedMoney も final で良いのでは？ by jflute (2026/10/23)
     // 変更されないのでfinalにしました
-    // TODO done sato displayPrice, handedMoneyはgetterも用意してないので保持する必要がない by jflute (2026/11/06)
+    // done sato displayPrice, handedMoneyはgetterも用意してないので保持する必要がない by jflute (2026/11/06)
     // なので、インスタンス変数からは削除でOK。(or getter用意するとか)
     private final int change;
     private final Ticket ticket;
 
     // #1on1: どちらかというと、引数の方に良い名前を付けたほうが、呼び出し側が助かる。 (2026/11/06)
     // 一方で、this. を使ってどっちも良い名前にするっていうのが一般的。 
-    // TODO done sato 引数名、もう少しわかるような名前にしましょう by jflute (2026/11/06)
+    // done sato 引数名、もう少しわかるような名前にしましょう by jflute (2026/11/06)
     public TicketBuyResult(int displayPrice, int handedMoney, int maxDays, TicketType ticketType) {
         change = handedMoney - displayPrice;
         ticket = new Ticket(displayPrice, maxDays, ticketType);

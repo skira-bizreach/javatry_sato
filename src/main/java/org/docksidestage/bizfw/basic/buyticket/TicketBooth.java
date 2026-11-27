@@ -15,7 +15,7 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
-// TODO done sato せっかくなので @author を追加でお願いします by jflute (2026/11/06)
+// done sato せっかくなので @author を追加でお願いします by jflute (2026/11/06)
 
 /**
  * @author jflute
@@ -136,6 +136,7 @@ public class TicketBooth {
         return buyResult;
     }
 
+    // #1on1: ここもenumをしっかり作って使いこなすのを先に考えてOK。 (2026/11/27)
     public TicketBuyResult buyPassport(Integer handedMoney, int maxDays, TicketType ticketType) {
         throwIfSoldOut(quantity);
         int ticketPrice;

@@ -338,6 +338,11 @@ public class Step05ClassTest extends PlainTestCase {
     // いったん他に思いつかないので、コンストラクタを増やす、けどその場しのぎだなあ
     // メソッドをまとめたけど、結局分岐してて、これもうーんって感じ
     // リファクタで迷って時間使ってしまった、1on1でこのあたり相談させてください
+    //
+    // #1on1: いいね、お客さんの流れをかんがえるの非常にGood (2026/11/27)
+    // javatryとはいえ、業務をシミュレーションしたものなので、業務にフォーカス当てるのは素晴らしい。
+    // 入園時間帯種別のenumを綺麗に仕上げてみてください。
+    // enumの「サブの役割」をうまく使っていけば問題は解決するんじゃないかと思う。
     public void test_class_moreFix_yourRefactoring() {
         // your confirmation code here
     }

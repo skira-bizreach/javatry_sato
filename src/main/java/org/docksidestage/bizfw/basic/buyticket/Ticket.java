@@ -61,7 +61,8 @@ public class Ticket {
         }
     }
 
-    // TODO jflute 次回、ここのConstructorのレビュー一緒に (2026/11/06)
+    // done jflute 次回、ここのConstructorのレビュー一緒に (2026/11/06)
+    // #1on1: step5.javaの方で、enumの活用のヒントを出している (2026/11/27)
     public Ticket(int displayPrice, int maxDays, TicketType ticketType) {
         this.displayPrice = displayPrice;
         this.inParkCount = 0;
@@ -99,6 +100,7 @@ public class Ticket {
         //                if (alreadyIn) {
         //                    throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         //                }
+        // TODO sato 24時間常に落ちてるので、許された時間帯だったら入れるようにしましょう。 by jflute (2026/11/27)
         if (ticketType == TicketType.NIGHT_ONLY) {
             throw new IllegalStateException("このチケットでは17時まで入園できません");
         }
